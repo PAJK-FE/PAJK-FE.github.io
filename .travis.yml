@@ -1,0 +1,27 @@
+language: node_js
+
+node_js: stable
+
+install:
+  - npm install  
+
+script:
+  - hexo cl       #清除
+  - hexo g        #生成
+  - hexo algolia  #生成algolia搜索
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "chengandpeng" 
+  - git config user.email "chengandpeng@gmail.com"
+  - git add .
+  - git commit -m "update"
+  - git push --force "https://${DEPLOY_TOKEN}@${GH_REF}" master:master 
+
+branches:
+  only:
+    - source
+env:
+ global:
+   - GH_REF: github.com/PAJK-FE/PAJK-FE.github.io.git
