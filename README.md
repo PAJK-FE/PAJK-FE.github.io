@@ -1,5 +1,5 @@
 # PAJK-FE Blog
-[![Build Status](https://travis-ci.org/PAJK-FE/PAJK-FE.github.io.svg?branch=master)](https://travis-ci.org/PAJK-FE/PAJK-FE.github.io)
+[![Build Status](https://travis-ci.org/PAJK-FE/PAJK-FE.github.io.svg?branch=source)](https://travis-ci.org/PAJK-FE/PAJK-FE.github.io)
 
 基于静态博客[Hexo](https://hexo.io/zh-cn/)，[NexT](http://theme-next.iissnan.com/)主题的博客。
 
