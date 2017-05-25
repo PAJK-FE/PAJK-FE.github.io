@@ -116,8 +116,8 @@ git clone https://github.com/atom-minimap/minimap.git
 		取色器(好像有bug)
 *    [hyperclick](https://atom.io/packages/hyperclick)
 		传伟同学推荐的文件跳转
-*    [eslint](https://atom.io/packages/eslint)
-		eslint 提示
+*    [fast-eslint](https://atom.io/packages/fast-eslint)
+		轻量级eslint 提示
 		
 
 		
