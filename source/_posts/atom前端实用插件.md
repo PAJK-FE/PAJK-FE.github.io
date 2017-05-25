@@ -63,6 +63,36 @@ apm uninstall packageName (从入门到放弃)
 是不是很简单呢？
 
 
+下面有同学吐槽说 apm install 安装失败了怎么办?
+
+![alt](http://imgsrc.baidu.com/forum/w%3D580/sign=39392c6bab773912c4268569c8188675/aa0229f33a87e950fa1099ba12385343faf2b4e7.jpg)
+
+好吧 我再讲讲别的安装方法
+
+1.
+`
+输入cd ~/.atom/packages/ (atom路径下packages目录)
+`
+
+2.
+找到插件地址后进入git repo跳转的链接
+[minimap](https://atom.io/packages/minimap) -》 [git地址](https://github.com/atom-minimap/minimap)
+
+3.
+用git clone 插件目录
+`
+git clone https://github.com/atom-minimap/minimap.git
+`
+
+4.
+然后可以直接在`~/.atom/packages/`目录下apm install minimap
+
+或者在packages目录进入package后直接安装 `cd minimap && apm install`
+
+5.
+`rm -rf ~/.atom/packages/minimap`(暴力删除方法)
+
+
 
 ### 实用插件推荐
 
@@ -74,6 +104,8 @@ apm uninstall packageName (从入门到放弃)
 		抄袭sublime的代码小地图
 *    [javascript-snippets](https://atom.io/packages/javascript-snippets)
 		js代码自动补全
+*    [react-snippets](https://atom.io/packages/react-snippets)
+		react 补全
 *    [autocomplete-plus](https://atom.io/packages/autocomplete-plus)
 		js代码补全建议
 *    [terminal-plus](https://atom.io/packages/terminal-plus)
@@ -82,10 +114,11 @@ apm uninstall packageName (从入门到放弃)
 		代码格式化
 *    [colorpicker](https://atom.io/packages/colorpicker)
 		取色器(好像有bug)
-
-
-先写这一些，后面想到再补充~~~~(这么写能有五毛钱么？）
-
+*    [hyperclick](https://atom.io/packages/hyperclick)
+		传伟同学推荐的文件跳转
+*    [eslint](https://atom.io/packages/eslint)
+		eslint 提示
+		
 
 		
 
