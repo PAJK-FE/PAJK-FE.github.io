@@ -7,6 +7,12 @@
 
 依赖[Travis CI](https://travis-ci.org/)自动编译部署。
 
+## Updated Feature
+### 2017/6/2
+1. 采用[Hypercomments](https://www.hypercomments.com/)作为新评论系统
+2. 新增作者超链功能，详见[如何给文章添加标签，分类和作者(个人主页)？](#如何给文章添加标签，分类和作者(个人主页)？)
+3. 补全[如何插入图片](#如何插入图片)教程
+
 ## How to publish new Post
 1. 准备环境
 ```bash
@@ -50,10 +56,13 @@ push到source分支后，Travis CI会自动编译部署。1~2分钟后刷新博�
 直接删除source/_posts下对应文件，push代码
 
 #### 如何插入图片
-todo
+新建文章后，会在_posts文件夹下生成一个title同名的文件夹。将需要插入的图片放到同名文件夹下。
+在md文章内使用`{% asset_img slug [title] %}`语法插入图片。详见[hexo教程](https://hexo.io/zh-cn/docs/asset-folders.html)
 
-#### 如何给文章添加标签，分类和作者？
-标签，分类，作者模板如下
+例如文件夹下有一个example.jpg图片，通过`{% asset_img example.jpg This is an example image %}`在文章中插入example.jpg图片。
+
+#### 如何给文章添加标签，分类和作者(个人主页)？
+标签，分类，作者模板如下，其authorLink(作者个人主页)为非必填项
 ```
 ---
 title: title
@@ -64,6 +73,7 @@ tags:
 categories:
 - 分类
 author: '+1s'
+authorLink: https://www.google.com
 ---
 ```
 * tags后填写标签，多标签用`-`换行添加

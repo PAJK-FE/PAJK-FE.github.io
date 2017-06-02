@@ -93,7 +93,11 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-user-o"></i>
             </span>
-            <span>{{ post.author }}</span/>
+            {% if post.authorLink and post.authorLink.length %}
+              <a href={{ post.authorLink }} target="_blank">{{ post.author }}</a>          
+            {% else %}
+              <span>{{ post.author }}</span/>
+            {% endif %}
           {% endif %}
 
           {% if post.categories and post.categories.length and theme.post_meta.categories %}
