@@ -62,7 +62,9 @@ push到source分支后，Travis CI会自动编译部署。1~2分钟后刷新博�
 例如文件夹下有一个example.jpg图片，通过`{% asset_img example.jpg This is an example image %}`在文章中插入example.jpg图片。
 
 #### 如何给文章添加标签，分类和作者(个人主页)
-标签，分类，作者模板如下，其authorLink(作者个人主页)为非必填项
+标签，分类，作者模板如下
+
+其中authorLink(作者个人主页)为非必填项，**目前链接必须带上http或https协议**
 ```
 ---
 title: title
