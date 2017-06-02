@@ -10,7 +10,7 @@
 ## Updated Feature
 ### 2017/6/2
 1. 采用[Hypercomments](https://www.hypercomments.com/)作为新评论系统
-2. 新增作者超链功能，详见[如何给文章添加标签，分类和作者(个人主页)？](#如何给文章添加标签，分类和作者(个人主页)？)
+2. 新增作者超链功能，详见[如何给文章添加标签，分类和作者(个人主页)](#如何给文章添加标签，分类和作者(个人主页))
 3. 补全[如何插入图片](#如何插入图片)教程
 
 ## How to publish new Post
@@ -61,7 +61,7 @@ push到source分支后，Travis CI会自动编译部署。1~2分钟后刷新博�
 
 例如文件夹下有一个example.jpg图片，通过`{% asset_img example.jpg This is an example image %}`在文章中插入example.jpg图片。
 
-#### 如何给文章添加标签，分类和作者(个人主页)？
+#### 如何给文章添加标签，分类和作者(个人主页)
 标签，分类，作者模板如下，其authorLink(作者个人主页)为非必填项
 ```
 ---
