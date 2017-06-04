@@ -79,4 +79,8 @@ OK, 现在我们知道`babel-runtime`的作用了，但是我们总不能在�
 
 最后，babel的文档真特么烂！
 
+如果你觉得阅读本文有收获，请给我打赏，谢谢
+
+
+<img src="/images/wechat_bugu.jpeg" width=36% height=36% style="display:inline-block;margin:0 auto;"/>
 
