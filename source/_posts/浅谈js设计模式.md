@@ -3,7 +3,7 @@ title: 浅谈js设计模式
 date: 2018-05-11 19:17:01
 tags:
 categories:
-author:
+author: nancy
 authorLink:
 ---
 ## 策略模式
