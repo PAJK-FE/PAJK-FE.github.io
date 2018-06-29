@@ -1,0 +1,979 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="react," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="React事件机制本文主要从源码角度讨论以下问题 react事件和原生 dom 事件的区别，混用的时候的问题。 react 是如何在虚拟 dom 上完成事件的绑定，绑定在哪？ 既然 react 采用的事件代理，那它又是如何做到事件冒泡的效果，如何阻止冒泡的，提供的阻止冒泡的 api 和原生阻止冒泡的 api 有何关联？ react 存在事件捕获吗？他是真正的事件捕获吗？又是如何做到捕获的效果？ r">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react事件机制源码分析">
+<meta property="og:url" content="https://pajk-fe.github.io/2017/06/03/react事件机制源码分析/index.html">
+<meta property="og:site_name" content="PAJK-FE BLOG">
+<meta property="og:description" content="React事件机制本文主要从源码角度讨论以下问题 react事件和原生 dom 事件的区别，混用的时候的问题。 react 是如何在虚拟 dom 上完成事件的绑定，绑定在哪？ 既然 react 采用的事件代理，那它又是如何做到事件冒泡的效果，如何阻止冒泡的，提供的阻止冒泡的 api 和原生阻止冒泡的 api 有何关联？ react 存在事件捕获吗？他是真正的事件捕获吗？又是如何做到捕获的效果？ r">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-29T08:01:26.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react事件机制源码分析">
+<meta name="twitter:description" content="React事件机制本文主要从源码角度讨论以下问题 react事件和原生 dom 事件的区别，混用的时候的问题。 react 是如何在虚拟 dom 上完成事件的绑定，绑定在哪？ 既然 react 采用的事件代理，那它又是如何做到事件冒泡的效果，如何阻止冒泡的，提供的阻止冒泡的 api 和原生阻止冒泡的 api 有何关联？ react 存在事件捕获吗？他是真正的事件捕获吗？又是如何做到捕获的效果？ r">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'H3PXN7RGPT',
+      apiKey: 'de272b1fc94c835c20b7de67668fa4ea',
+      indexName: 'PAJK-FE',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://pajk-fe.github.io/2017/06/03/react事件机制源码分析/"/>
+
+
+
+
+
+  <title> react事件机制源码分析 | PAJK-FE BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73365165-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAJK-FE BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我是副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://pajk-fe.github.io/2017/06/03/react事件机制源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PAJK-FE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAJK-FE BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                react事件机制源码分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T11:10:19+00:00">
+                2017-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-user-o"></i>
+            </span>
+            
+              <span>peanut</span/>
+            
+          
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/03/react事件机制源码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/06/03/react事件机制源码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2017/06/03/react事件机制源码分析/" class="leancloud_visitors" data-flag-title="react事件机制源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="React事件机制"><a href="#React事件机制" class="headerlink" title="React事件机制"></a>React事件机制</h3><h3 id="本文主要从源码角度讨论以下问题"><a href="#本文主要从源码角度讨论以下问题" class="headerlink" title="本文主要从源码角度讨论以下问题"></a>本文主要从源码角度讨论以下问题</h3><ul>
+<li>react事件和原生 dom 事件的区别，混用的时候的问题。</li>
+<li>react 是如何在虚拟 dom 上完成事件的绑定，绑定在哪？</li>
+<li>既然 react 采用的事件代理，那它又是如何做到事件冒泡的效果，如何阻止冒泡的，提供的阻止冒泡的 api 和原生阻止冒泡的 api 有何关联？</li>
+<li>react 存在事件捕获吗？他是真正的事件捕获吗？又是如何做到捕获的效果？</li>
+<li>react 事件的插件机制及合成的事件对象（reatc 支持的7个事件插件）</li>
+</ul>
+<h3 id="react事件绑定阶段（绑定阶段和事件处理器存储阶段）"><a href="#react事件绑定阶段（绑定阶段和事件处理器存储阶段）" class="headerlink" title="react事件绑定阶段（绑定阶段和事件处理器存储阶段）"></a>react事件绑定阶段（绑定阶段和事件处理器存储阶段）</h3><h4 id="绑定阶段"><a href="#绑定阶段" class="headerlink" title="绑定阶段"></a>绑定阶段</h4><p>1：当我们在 jsx 上绑定了 react 提供的事件绑定方式，那么绑定的该事件是如何被注册到事件系统的呢？组件的 mounting 和 updata都会去解析 jsx 上绑定的事件，这里我们只看 mounting阶段;<br>react事务： 其源码在src/shared/utils/Transaction.js. (以下用到的)transaction: react的方法执行是基于事务的，Transaction就是给需要执行的方法fn用wrapper封装了 initializeAll 和 closeAll 方法。且支持多次封装。再通过 Transaction 提供的 perform 方法执行。 perform执行前，调用所有initializeAll 方法。perform 方法执行后，调用所有closeAll方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  mountComponent: <span class="function"><span class="keyword">function</span>(<span class="params">rootID, transaction, context</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 这里只取关键部分分析</span></span><br><span class="line">    <span class="keyword">this</span>._rootNodeID = rootID;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> props = <span class="keyword">this</span>._currentElement.props;</span><br><span class="line">    <span class="keyword">var</span> mountImage;</span><br><span class="line">    <span class="keyword">if</span> (transaction.useCreateElement) &#123;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 创建每个元素的开始标签和解析元素上的props，如 style、事件、等</span></span><br><span class="line">      <span class="keyword">var</span> tagOpen = <span class="keyword">this</span>._createOpenTagMarkupAndPutListeners(transaction, props);</span><br><span class="line">      <span class="comment">// 子标签作为 content 解析，会进入到mountChildren，mountChildren作用如mountComponent 同样会解析标签上的一些属性</span></span><br><span class="line">      <span class="keyword">var</span> tagContent = <span class="keyword">this</span>._createContentMarkup(transaction, props, context);</span><br><span class="line">      <span class="keyword">if</span> (!tagContent &amp;&amp; omittedCloseTags[<span class="keyword">this</span>._tag]) &#123;</span><br><span class="line">        mountImage = tagOpen + <span class="string">'/&gt;'</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mountImage =</span><br><span class="line">          tagOpen + <span class="string">'&gt;'</span> + tagContent + <span class="string">'&lt;/'</span> + <span class="keyword">this</span>._currentElement.type + <span class="string">'&gt;'</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mountImage;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_createOpenTagMarkupAndPutListeners: <span class="function"><span class="keyword">function</span>(<span class="params">transaction, props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = <span class="string">'&lt;'</span> + <span class="keyword">this</span>._currentElement.type;</span><br><span class="line">  <span class="comment">// 这里的 props 包含标签上所有可以定义的属性，只分析事件</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> propKey <span class="keyword">in</span> props) &#123;</span><br><span class="line">    <span class="comment">// registrationNameModules 这是加载 react 应用时，注册到 react EventPluginHub这个事件插件中心所有 react 支持的事件类型</span></span><br><span class="line">    <span class="keyword">if</span> (registrationNameModules.hasOwnProperty(propKey)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (propValue) &#123;</span><br><span class="line">        enqueuePutListener(<span class="keyword">this</span>._rootNodeID, propKey, propValue, transaction);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>2：主要来看这个enqueuePutListener,这个函数主要完成事件绑定在 document 对象上，和把相关的事件信息进行存储。<br>这里我们可以看出 jsx 中申明的事件确实绑定在 document 对象上了，在每一个标签解析完毕后，会把 domId，事件名称、事件处理函数存储在后面提到的listenBank这个对象中;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">enqueuePutListener</span>(<span class="params">id, registrationName, listener, transaction</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> container = ReactMount.findReactContainerForID(id);</span><br><span class="line">  <span class="keyword">if</span> (container) &#123;</span><br><span class="line">    <span class="comment">// 确保元素类型是节点类型,并且取到 document 节点</span></span><br><span class="line">    <span class="keyword">var</span> doc = container.nodeType === ELEMENT_NODE_TYPE ?</span><br><span class="line">      container.ownerDocument :</span><br><span class="line">      container;</span><br><span class="line">    <span class="comment">// 在 document 对象上完成事件的绑定</span></span><br><span class="line">    listenTo(registrationName, doc);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 该方法会在jsx中每一个嵌套的dom标签渲染完毕（依次往上递归）会去调用</span></span><br><span class="line">  transaction.getReactMountReady().enqueue(putListener, &#123;</span><br><span class="line">    id: id,</span><br><span class="line">    registrationName: registrationName,</span><br><span class="line">    listener: listener,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3：listenTo方法，主要是处理一些浏览器冒泡和捕获兼容性的问题，同时可以看出，同种类型的事件只绑定一次，保证了效率<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">listenTo: <span class="function"><span class="keyword">function</span>(<span class="params">registrationName, contentDocumentHandle</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> mountAt = contentDocumentHandle;</span><br><span class="line">  <span class="keyword">var</span> isListening = getListeningForDocument(mountAt);</span><br><span class="line">  <span class="keyword">var</span> dependencies =</span><br><span class="line">    EventPluginRegistry.registrationNameDependencies[registrationName];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> topLevelTypes = EventConstants.topLevelTypes;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; dependencies.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> dependency = dependencies[i];</span><br><span class="line">    <span class="comment">// 以下分支只看最后一个，上面的几个都是特殊处理过的，如兼容性什么的</span></span><br><span class="line">    <span class="keyword">if</span> (!(</span><br><span class="line">          isListening.hasOwnProperty(dependency) &amp;&amp;</span><br><span class="line">          isListening[dependency]</span><br><span class="line">        )) &#123;</span><br><span class="line">      <span class="keyword">if</span> (dependency === topLevelTypes.topWheel) &#123;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dependency === topLevelTypes.topScroll) &#123;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dependency === topLevelTypes.topFocus ||</span><br><span class="line">          dependency === topLevelTypes.topBlur) &#123;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (topEventMapping.hasOwnProperty(dependency)) &#123;</span><br><span class="line">        ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(</span><br><span class="line">          dependency,</span><br><span class="line">          topEventMapping[dependency],</span><br><span class="line">          mountAt</span><br><span class="line">        );</span><br><span class="line">      &#125;</span><br><span class="line">      isListening[dependency] = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+<p> 4：react 中会提供捕获的api，如onClickCapture, 在事件收集阶段，react都统一处理了，如onClick、 onClickCapture转化为统一的命名如topClcik，从这我们也能察觉到，这个捕获的 api 是不是真正意义上的捕获？trapBubbledEvent 完成了事件绑定到 document 上的任务，后续具体的事件<br>  执行，要注意 ReactEventListener.dispatchEvent.bind(null, topLevelType)，是如何在一个节点上模拟出冒泡和捕获的效果。<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">trapBubbledEvent: <span class="function"><span class="keyword">function</span> (<span class="params">topLevelType, handlerBaseName, element</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!element) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> EventListener.listen(</span><br><span class="line">    element,   <span class="comment">// 绑定到的DOM目标,也就是document</span></span><br><span class="line">    handlerBaseName,   <span class="comment">// eventType</span></span><br><span class="line">    ReactEventListener.dispatchEvent.bind(<span class="literal">null</span>, topLevelType));  <span class="comment">// document上的原生事件触发后回调</span></span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">listen: <span class="function"><span class="keyword">function</span> <span class="title">listen</span>(<span class="params">target, eventType, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (target.addEventListener) &#123;</span><br><span class="line">    <span class="comment">// 将原生事件添加到target这个dom上,也就是document上。</span></span><br><span class="line">    target.addEventListener(eventType, callback, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="comment">// 删除事件,这个由React自己回调,不需要调用者来销毁。但仅仅对于React合成事件才行</span></span><br><span class="line">      remove: <span class="function"><span class="keyword">function</span> <span class="title">remove</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        target.removeEventListener(eventType, callback, <span class="literal">false</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target.attachEvent) &#123;</span><br><span class="line">    <span class="comment">// attach和detach的方式</span></span><br><span class="line">    target.attachEvent(<span class="string">'on'</span> + eventType, callback);</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      remove: <span class="function"><span class="keyword">function</span> <span class="title">remove</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        target.detachEvent(<span class="string">'on'</span> + eventType, callback);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+<p> 总结一下: 通过以上阶段react初步完成同种类型事件的单次绑定且绑定在document对象，接下来我们再看相关的事件信息如事件名，domid，事件处理器是如何存储在listenBank 这个事件对象中的。接着上面的 enqueuePutListener()中的transaction.getReactMountReady()方法</p>
+<h4 id="事件句柄存储阶段"><a href="#事件句柄存储阶段" class="headerlink" title="事件句柄存储阶段"></a>事件句柄存储阶段</h4><p>添加事件处理器到listenerBank这个统一的事件处理器对象中，jsx中每一个嵌套的dom标签渲染完毕（依次往上递归）会去调用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">putListener: <span class="function"><span class="keyword">function</span>(<span class="params">id, registrationName, listener</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// eg: listenerBank['onclick'][nodeId]</span></span><br><span class="line">    <span class="keyword">var</span> bankForRegistrationName =</span><br><span class="line">      listenerBank[registrationName] || (listenerBank[registrationName] = &#123;&#125;);</span><br><span class="line">    bankForRegistrationName[id] = listener;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<h3 id="事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）"><a href="#事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）" class="headerlink" title="事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）"></a>事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）</h3><p>  看到这其实我们就明白了，react 的这一套事件机制其实还是在利用原生事件的冒泡机制，所以原生事件和 react 事件混合使用会有一些坑，比如说在 componentDidMount拿到真实 dom 通过原生事件的方式来绑定一些事件，阻止冒泡，那我们通过 react 绑定的事件是不会响应的等等，稍后一并总结</p>
+<h4 id="复合事件对象合成阶段"><a href="#复合事件对象合成阶段" class="headerlink" title="复合事件对象合成阶段"></a>复合事件对象合成阶段</h4><p>  1：先说下 react 所支持的事件插件，BeforeInputEventPlugin, ChangeEventPlugin, DOMEventPluginOrder, EnterLeaveEventPlugin,<br>  SelectEventPlugin, SimpleEventPlugin, TapEventPlugin, 总共7个事件插件。SimpleEventPlugin插件是我们常用的，支持的事件类型有焦点事件、键盘事件、鼠标事件、拖放事件、触摸事件、鼠标滚轮事件、ui事件, 这些事件类型继承自SyntheticEvent（提供事件对象中相同的部分）。每种事件类型合成的事件对象参数有相同的部分又有定制的部分，当然一个操作可能会引起多种事件类型，如鼠标点击会引起鼠标事件和 ui 事件。所以 reatc 会根据特定的事件类型去合成特定的事件对象（可能是多个事件类型复合而成）。就以我们常用的SimpleEventPlugin插件支持的鼠标事件大概说一下,鼠标事件又分很多种，比如单击事件、右键菜单事件、鼠标进出等、下图为鼠标事件对象中的一些参数，<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> MouseEventInterface = &#123;</span><br><span class="line">  screenX: <span class="literal">null</span>,</span><br><span class="line">  screenY: <span class="literal">null</span>,</span><br><span class="line">  clientX: <span class="literal">null</span>,</span><br><span class="line">  clientY: <span class="literal">null</span>,</span><br><span class="line">  ctrlKey: <span class="literal">null</span>,</span><br><span class="line">  shiftKey: <span class="literal">null</span>,</span><br><span class="line">  altKey: <span class="literal">null</span>,</span><br><span class="line">  metaKey: <span class="literal">null</span>,</span><br><span class="line">  getModifierState: getEventModifierState,</span><br><span class="line">  button: <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 一些兼容性的处理</span></span><br><span class="line">  &#125;,</span><br><span class="line">  buttons: <span class="literal">null</span>,</span><br><span class="line">  relatedTarget: <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//  同上</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// "Proprietary" Interface.</span></span><br><span class="line">  pageX: <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  pageY: <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>SyntheticEvent: 提供事件对象共同的部分，和在原型上挂一些复合事件对象的方法如preventDefault、stopPropagation、persist、destructor（看起来是不是很熟悉，这就是 react 提供出来的关于事件对象的 api), 注意一下this.isPropagationStopped、this.isPropagationStopped，这是后续我们会看到的一个关键标识。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> EventInterface = &#123;</span><br><span class="line">  type: <span class="literal">null</span>,</span><br><span class="line">  currentTarget: emptyFunction.thatReturnsNull,</span><br><span class="line">  eventPhase: <span class="literal">null</span>,</span><br><span class="line">  bubbles: <span class="literal">null</span>,</span><br><span class="line">  cancelable: <span class="literal">null</span>,</span><br><span class="line">  timeStamp: <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> event.timeStamp || <span class="built_in">Date</span>.now();</span><br><span class="line">  &#125;,</span><br><span class="line">  defaultPrevented: <span class="literal">null</span>,</span><br><span class="line">  isTrusted: <span class="literal">null</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">assign(SyntheticEvent.prototype, &#123;</span><br><span class="line"></span><br><span class="line">  preventDefault: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.defaultPrevented = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">var</span> event = <span class="keyword">this</span>.nativeEvent;</span><br><span class="line">    <span class="keyword">if</span> (!event) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (event.preventDefault) &#123;</span><br><span class="line">      event.preventDefault();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      event.returnValue = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意这个方法，这是才是 react 提供出来阻止默认事件的方法，以上为了在具体的触发元素上同步信息</span></span><br><span class="line">    <span class="keyword">this</span>.isDefaultPrevented = emptyFunction.thatReturnsTrue;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  stopPropagation: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> event = <span class="keyword">this</span>.nativeEvent;</span><br><span class="line">    <span class="keyword">if</span> (!event) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (event.stopPropagation) &#123;</span><br><span class="line">      event.stopPropagation();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      event.cancelBubble = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意这个方法，这是才是 react 提供出来阻止冒泡的方法，以上为了在具体的触发元素上同步信息</span></span><br><span class="line">    <span class="keyword">this</span>.isPropagationStopped = emptyFunction.thatReturnsTrue;</span><br><span class="line">  &#125;,</span><br><span class="line">  persist: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.isPersistent = emptyFunction.thatReturnsTrue;</span><br><span class="line">  &#125;,</span><br><span class="line">  isPersistent: emptyFunction.thatReturnsFalse,</span><br><span class="line">  destructor: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Interface = <span class="keyword">this</span>.constructor.Interface;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> propName <span class="keyword">in</span> Interface) &#123;</span><br><span class="line">      <span class="keyword">this</span>[propName] = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.dispatchConfig = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.dispatchMarker = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.nativeEvent = <span class="literal">null</span>;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>2：以上只是介绍了 react 的事件插件，下面我们继续看看如何合成这个复合事件对象，在第一部分我们已经完成了事件的绑定和事件句柄的存储，接下来就分析一下执行阶段中的事件对象的合成，react 的这一套事件机制是建立在原生事件的基础上的，我们在具体的元素上如 button 点击了一下，那么他会通过事件流中的冒泡阶段到达 document 上，我们在第一阶段已经完成了 document 上该类型事件的绑定，剩下的就是去执行这个队列，接上面的trapBubbledEvent，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// topLevelType：讲相关的事件名称转为 top 开头的，如topClick。前面讲到过的</span></span><br><span class="line"><span class="comment">// nativeEvent: 用户触发click等事件时，浏览器传递的原生事件</span></span><br><span class="line">dispatchEvent: <span class="function"><span class="keyword">function</span> (<span class="params">topLevelType, nativeEvent</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 静态池、批处理的为了提高性能的不说了</span></span><br><span class="line">    <span class="keyword">var</span> bookKeeping = TopLevelCallbackBookKeeping.getPooled(topLevelType, nativeEvent);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// 放入批处理队列中,React事件流也是一个消息队列的方式</span></span><br><span class="line">      ReactUpdates.batchedUpdates(handleTopLevelImpl, bookKeeping);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      TopLevelCallbackBookKeeping.release(bookKeeping);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">handleTopLevel: <span class="function"><span class="keyword">function</span> (<span class="params">topLevelType, targetInst, nativeEvent, nativeEventTarget</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 采用对象池的方式构造出合成事件。不同的eventType的合成事件不同</span></span><br><span class="line">    <span class="keyword">var</span> events = EventPluginHub.extractEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget);</span><br><span class="line">    <span class="comment">// 批处理队列中的events</span></span><br><span class="line">    runEventQueueInBatch(events);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>3 根据事件类型构造事件对象，不同的事件类型合成的事件对象参数上面已经说过，主要看事件对象中参数中的 _dispatchIDs 和 _dispatchListeners的生成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">extractEvents: <span class="function"><span class="keyword">function</span> (<span class="params">topLevelType, targetInst, nativeEvent, nativeEventTarget</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> events;</span><br><span class="line">    <span class="comment">// EventPluginHub可以存储React合成事件的callback,也存储了一些plugin,这些plugin在EventPluginHub初始化时就注册就来了</span></span><br><span class="line">    <span class="keyword">var</span> plugins = EventPluginRegistry.plugins;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; plugins.length; i++) &#123;</span><br><span class="line">      <span class="keyword">var</span> possiblePlugin = plugins[i];</span><br><span class="line">      <span class="keyword">if</span> (possiblePlugin) &#123;</span><br><span class="line">        <span class="comment">// 根据eventType构造不同的合成事件SyntheticEvent，  如SimpleEventPlugin</span></span><br><span class="line">        <span class="keyword">var</span> extractedEvents = possiblePlugin.extractEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget);</span><br><span class="line">        <span class="keyword">if</span> (extractedEvents) &#123;</span><br><span class="line">          <span class="comment">// 将构造好的合成事件extractedEvents添加到events数组中,这样就保存了所有plugin构造的合成事件</span></span><br><span class="line">          events = accumulateInto(events, extractedEvents);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> events;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>4：当我们在具体 dom 上触发了事件（click），会先从根组件到具体触发事件的 dom向下遍历，依次取出我们之前在listenBank 中存储的相关捕获类型的事件的监听器（onClickCapture）和domID,然后在从具体 dom 向上遍历至根组件，依次取出冒泡类型的监听器（onClick）和 domId, 分别挂载在事件对象中的 _dispatchListeners和 _dispatchIDs中，至此这个完整的事件对象合成完毕。accumulateDirectionalDispatches完成挂载。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">accumulateTwoPhaseDispatchesSkipTarget</span>(<span class="params">events</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 对合成的 events 分别执行 accumulateTwoPhaseDispatchesSingleSkipTarget</span></span><br><span class="line">  forEachAccumulated(events, accumulateTwoPhaseDispatchesSingleSkipTarget);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// traverseTwoPhaseSkipTarget 会在遍历 dom 的结构中依次调用accumulateDirectionalDispatches</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">accumulateTwoPhaseDispatchesSingleSkipTarget</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (event &amp;&amp; event.dispatchConfig.phasedRegistrationNames) &#123;</span><br><span class="line">    EventPluginHub.injection.getInstanceHandle().traverseTwoPhaseSkipTarget(</span><br><span class="line">      event.dispatchMarker,</span><br><span class="line">      accumulateDirectionalDispatches,</span><br><span class="line">      event</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// domID,正在遍历的 dom，upwards向上还是向下，模拟捕获和冒泡的顺序，event复合事件对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">accumulateDirectionalDispatches</span>(<span class="params">domID, upwards, event</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> phase = upwards ? PropagationPhases.bubbled : PropagationPhases.captured;</span><br><span class="line">  <span class="keyword">var</span> listener = listenerAtPhase(domID, event, phase);</span><br><span class="line">  <span class="keyword">if</span> (listener) &#123;</span><br><span class="line">    event._dispatchListeners =</span><br><span class="line">      accumulateInto(event._dispatchListeners, listener);</span><br><span class="line">    event._dispatchIDs = accumulateInto(event._dispatchIDs, domID);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 先向下，再向上</span></span><br><span class="line">traverseTwoPhaseSkipTarget: <span class="function"><span class="keyword">function</span>(<span class="params">targetID, cb, arg</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (targetID) &#123;</span><br><span class="line">      traverseParentPath(<span class="string">''</span>, targetID, cb, arg, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">      traverseParentPath(targetID, <span class="string">''</span>, cb, arg, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseParentPath</span>(<span class="params">start, stop, cb, arg, skipFirst, skipLast</span>) </span>&#123;</span><br><span class="line">  start = start || <span class="string">''</span>;</span><br><span class="line">  stop = stop || <span class="string">''</span>;</span><br><span class="line">  <span class="keyword">var</span> traverseUp = isAncestorIDOf(stop, start);</span><br><span class="line">  <span class="comment">// Traverse from `start` to `stop` one depth at a time.</span></span><br><span class="line">  <span class="keyword">var</span> depth = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">var</span> traverse = traverseUp ? getParentID : getNextDescendantID;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> id = start; <span class="comment">/* until break */</span>; id = traverse(id, stop)) &#123;</span><br><span class="line">    <span class="keyword">var</span> ret;</span><br><span class="line">    <span class="keyword">if</span> ((!skipFirst || id !== start) &amp;&amp; (!skipLast || id !== stop)) &#123;</span><br><span class="line">      ret = cb(id, traverseUp, arg);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ret === <span class="literal">false</span> || id === stop) &#123;</span><br><span class="line">      <span class="comment">// Only break //after// visiting `stop`.</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="执行阶段"><a href="#执行阶段" class="headerlink" title="执行阶段"></a>执行阶段</h4><p>1：剩下的就是取出复合事件对象中的_dispatchListeners这个队列来执行，在SyntheticEvent中我们说到，react 提供的几个关于事件对象的几个 api，如preventDefault、stopPropagation、persist，我们说过注意一下this.isPropagationStopped、this.isPropagationStopped，以stopPropagation 这个 api 为列，在事件处理其中我们调用 e.stopPropagation()、e.preventDefault(),这两个虽然看起来和原生的 api 长得一样（也仅仅是长得一样），其实调用他们时，该事件流已经传播到了 document上了，为了保持和原生事件对象的参数同步（毕竟复合对象中有个nativeEventz这个里面是原生的事件对象）所以拿到原生对象再去调用一下相关的方法，并且设置了event.isPropagationStopped = 返回值为 true 的函数，所以在执行这个事件处理器队列的时候， 会 break，达到了阻止冒泡的效果（并非真正的阻止冒泡，真正的冒泡是存在多级嵌套的父子关系的元素，依次传递)。同时可以看到事件处理器默认有两个参数，复合事件对象和 domid。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">executeDispatchesInOrder</span>(<span class="params">event, simulated</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> dispatchListeners = event._dispatchListeners;</span><br><span class="line">  <span class="keyword">var</span> dispatchIDs = event._dispatchIDs;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(dispatchListeners)) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; dispatchListeners.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (event.isPropagationStopped()) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// Listeners and IDs are two parallel arrays that are always in sync.</span></span><br><span class="line">      executeDispatch(event, simulated, dispatchListeners[i], dispatchIDs[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dispatchListeners) &#123;</span><br><span class="line">    executeDispatch(event, simulated, dispatchListeners, dispatchIDs);</span><br><span class="line">  &#125;</span><br><span class="line">  event._dispatchListeners = <span class="literal">null</span>;</span><br><span class="line">  event._dispatchIDs = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="react-事件系统架构图"><a href="#react-事件系统架构图" class="headerlink" title="react 事件系统架构图"></a>react 事件系统架构图</h3><p>现在我们再来看看 fb 官方给出的 react 整个事件系统的架构，我们就能很容易的看明白整个流程。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Overview <span class="keyword">of</span> React and the event system:</span><br><span class="line">*</span><br><span class="line">* +------------+    .</span><br><span class="line">* |    DOM     |    .</span><br><span class="line">* +------------+    .</span><br><span class="line">*       |           .</span><br><span class="line">*       v           .</span><br><span class="line">* +------------+    .</span><br><span class="line">* | ReactEvent |    .</span><br><span class="line">* |  Listener  |    .</span><br><span class="line">* +------------+    .                         +-----------+</span><br><span class="line">*       |           .               +--------+|SimpleEvent|</span><br><span class="line">*       |           .               |         |Plugin     |</span><br><span class="line">* +-----|------+    .               v         +-----------+</span><br><span class="line">* |     |      |    .    +--------------+                    +------------+</span><br><span class="line">* |     +-----------.---&gt;|EventPluginHub|                    |    Event   |</span><br><span class="line">* |            |    .    |              |     +-----------+  | Propagators|</span><br><span class="line">* | ReactEvent |    .    |              |     |TapEvent   |  |------------|</span><br><span class="line">* |  Emitter   |    .    |              |<span class="xml"><span class="tag">&lt;<span class="name">---+|Plugin</span>     |  |<span class="attr">other</span> <span class="attr">plugin</span>|</span></span></span><br><span class="line"><span class="xml">* |            |    .    |              |     +-----------+  |  utilities |</span></span><br><span class="line"><span class="xml">* |     +-----------.---&gt;|              |                    +------------+</span></span><br><span class="line"><span class="xml">* |     |      |    .    +--------------+</span></span><br><span class="line"><span class="xml">* +-----|------+    .                ^        +-----------+</span></span><br><span class="line"><span class="xml">*       |           .                |        |Enter/Leave|</span></span><br><span class="line"><span class="xml">*       +           .                +-------+|Plugin     |</span></span><br><span class="line"><span class="xml">* +-------------+   .                         +-----------+</span></span><br><span class="line"><span class="xml">* | application |   .</span></span><br><span class="line"><span class="xml">* |-------------|   .</span></span><br><span class="line"><span class="xml">* |             |   .</span></span><br><span class="line"><span class="xml">* |             |   .</span></span><br><span class="line"><span class="xml">* +-------------+   .</span></span><br><span class="line"><span class="xml">*                   .</span></span><br><span class="line"><span class="xml">*    React Core     .  General Purpose Event Plugin System</span></span><br><span class="line"><span class="xml">*/</span></span><br></pre></td></tr></table></figure></p>
+<p>ReactEventListener：负责事件注册和事件分发。React将DOM事件全都注册到document这个节点上。事件分发主要调用dispatchEvent进行。<br>ReactEventEmitter：负责每个组件上事件的执行。<br>EventPluginHub：负责事件的存储，合成事件以对象池的方式实现创建和销毁，大大提高了性能。（核心）<br>SimpleEventPlugin等plugin：根据不同的事件类型，构造不同的合成事件。</p>
+<p>看到这我们应该很容易的能回答之前的问题了，以及开发中遇到的和事件相关的坑大家应该知道为什么了吧。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/02/react-decorator/" rel="next" title="浅析修饰器(Decorator)在React中的应用">
+                <i class="fa fa-chevron-left"></i> 浅析修饰器(Decorator)在React中的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/03/babel/" rel="prev" title="babel拾遗">
+                babel拾遗 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59218ccef0abff95" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="PAJK-FE" />
+          <p class="site-author-name" itemprop="name">PAJK-FE</p>
+           
+              <p class="site-description motion-element" itemprop="description">平安健康前端博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/PAJK-FE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#React事件机制"><span class="nav-number">1.</span> <span class="nav-text">React事件机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本文主要从源码角度讨论以下问题"><span class="nav-number">2.</span> <span class="nav-text">本文主要从源码角度讨论以下问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#react事件绑定阶段（绑定阶段和事件处理器存储阶段）"><span class="nav-number">3.</span> <span class="nav-text">react事件绑定阶段（绑定阶段和事件处理器存储阶段）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绑定阶段"><span class="nav-number">3.1.</span> <span class="nav-text">绑定阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件句柄存储阶段"><span class="nav-number">3.2.</span> <span class="nav-text">事件句柄存储阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）"><span class="nav-number">4.</span> <span class="nav-text">事件触发执行阶段（分复合事件对象合成阶段和事件函数队列执行）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复合事件对象合成阶段"><span class="nav-number">4.1.</span> <span class="nav-text">复合事件对象合成阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行阶段"><span class="nav-number">4.2.</span> <span class="nav-text">执行阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#react-事件系统架构图"><span class="nav-number">5.</span> <span class="nav-text">react 事件系统架构图</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-cube"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PAJK-FE</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 91710, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 91710, xid: "2017/06/03/react事件机制源码分析/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/91710/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("q6Ia0iMpPtRYJ7vPSbtJfSHn-gzGzoHsz", "8mSczUyAUNy071zbyEtjJFG5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

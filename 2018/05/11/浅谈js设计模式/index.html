@@ -1,0 +1,971 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PAJK, FE" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="策略模式 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。目的是将算法的使用与算法的实现分离开来。  一个基于策略模式的程序至少由两部分组成：  一组策略类，策略类封装了具体的算法，并且负责具体的计算过程。 环境类Context, Context接受客户的请求，随后把请求委托给某一个策略类。  12345678910111213141516171819202122232425val">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈js设计模式">
+<meta property="og:url" content="https://pajk-fe.github.io/2018/05/11/浅谈js设计模式/index.html">
+<meta property="og:site_name" content="PAJK-FE BLOG">
+<meta property="og:description" content="策略模式 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。目的是将算法的使用与算法的实现分离开来。  一个基于策略模式的程序至少由两部分组成：  一组策略类，策略类封装了具体的算法，并且负责具体的计算过程。 环境类Context, Context接受客户的请求，随后把请求委托给某一个策略类。  12345678910111213141516171819202122232425val">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-29T08:01:26.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈js设计模式">
+<meta name="twitter:description" content="策略模式 定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。目的是将算法的使用与算法的实现分离开来。  一个基于策略模式的程序至少由两部分组成：  一组策略类，策略类封装了具体的算法，并且负责具体的计算过程。 环境类Context, Context接受客户的请求，随后把请求委托给某一个策略类。  12345678910111213141516171819202122232425val">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'H3PXN7RGPT',
+      apiKey: 'de272b1fc94c835c20b7de67668fa4ea',
+      indexName: 'PAJK-FE',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://pajk-fe.github.io/2018/05/11/浅谈js设计模式/"/>
+
+
+
+
+
+  <title> 浅谈js设计模式 | PAJK-FE BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73365165-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAJK-FE BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我是副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://pajk-fe.github.io/2018/05/11/浅谈js设计模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PAJK-FE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAJK-FE BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅谈js设计模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T19:17:01+00:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-user-o"></i>
+            </span>
+            
+              <span>nancy</span/>
+            
+          
+
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/11/浅谈js设计模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2018/05/11/浅谈js设计模式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2018/05/11/浅谈js设计模式/" class="leancloud_visitors" data-flag-title="浅谈js设计模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><blockquote>
+<p>定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。目的是将算法的使用与算法的实现分离开来。</p>
+</blockquote>
+<p>一个基于策略模式的程序至少由两部分组成：</p>
+<ol>
+<li>一组策略类，策略类封装了具体的算法，并且负责具体的计算过程。</li>
+<li>环境类Context, Context接受客户的请求，随后把请求委托给某一个策略类。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">validator = &#123;</span><br><span class="line">    validate: <span class="function"><span class="keyword">function</span> (<span class="params">value, type</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'isNonEmpty '</span>:</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// NonEmpty 验证结果</span></span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'isNumber '</span>:</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// Number 验证结果</span></span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'isAlphaNum '</span>:</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// AlphaNum 验证结果</span></span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//  测试</span></span><br><span class="line">alert(validator.validate(<span class="string">"123"</span>, <span class="string">"isNonEmpty"</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> validator = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 所有可以的验证规则处理类存放的地方，后面会单独定义</span></span><br><span class="line">    types: &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 验证类型所对应的错误消息</span></span><br><span class="line">    messages: [],</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当然需要使用的验证类型</span></span><br><span class="line">    config: &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 暴露的公开验证方法</span></span><br><span class="line">    <span class="comment">// 传入的参数是 key =&gt; value对</span></span><br><span class="line">    validate: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> i, msg, type, checker, result_ok;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 清空所有的错误信息</span></span><br><span class="line">        <span class="keyword">this</span>.messages = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i <span class="keyword">in</span> data) &#123;</span><br><span class="line">            <span class="keyword">if</span> (data.hasOwnProperty(i)) &#123;</span><br><span class="line"></span><br><span class="line">                type = <span class="keyword">this</span>.config[i];  <span class="comment">// 根据key查询是否有存在的验证规则</span></span><br><span class="line">                checker = <span class="keyword">this</span>.types[type]; <span class="comment">// 获取验证规则的验证类</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!type) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>; <span class="comment">// 如果验证规则不存在，则不处理</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (!checker) &#123; <span class="comment">// 如果验证规则类不存在，抛出异常</span></span><br><span class="line">                    <span class="keyword">throw</span> &#123;</span><br><span class="line">                        name: <span class="string">"ValidationError"</span>,</span><br><span class="line">                        message: <span class="string">"No handler to validate type "</span> + type</span><br><span class="line">                    &#125;;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                result_ok = checker.validate(data[i]); <span class="comment">// 使用查到到的单个验证类进行验证</span></span><br><span class="line">                <span class="keyword">if</span> (!result_ok) &#123;</span><br><span class="line">                    msg = <span class="string">"Invalid value for *"</span> + i + <span class="string">"*, "</span> + checker.instructions;</span><br><span class="line">                    <span class="keyword">this</span>.messages.push(msg);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.hasErrors();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// helper</span></span><br><span class="line">    hasErrors: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.messages.length !== <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证给定的值是否不为空</span></span><br><span class="line">validator.types.isNonEmpty = &#123;</span><br><span class="line">    validate: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value !== <span class="string">""</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    instructions: <span class="string">"传入的值不能为空"</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证给定的值是否是数字</span></span><br><span class="line">validator.types.isNumber = &#123;</span><br><span class="line">    validate: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !<span class="built_in">isNaN</span>(value);</span><br><span class="line">    &#125;,</span><br><span class="line">    instructions: <span class="string">"传入的值只能是合法的数字，例如：1, 3.14 or 2010"</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证给定的值是否只是字母或数字</span></span><br><span class="line">validator.types.isAlphaNum = &#123;</span><br><span class="line">    validate: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !<span class="regexp">/[^a-z0-9]/i</span>.test(value);</span><br><span class="line">    &#125;,</span><br><span class="line">    instructions: <span class="string">"传入的值只能保护字母和数字，不能包含特殊字符"</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">    first_name: <span class="string">"Tom"</span>,</span><br><span class="line">    last_name: <span class="string">"Xu"</span>,</span><br><span class="line">    age: <span class="string">"unknown"</span>,</span><br><span class="line">    username: <span class="string">"TomXu"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//该对象的作用是检查验证类型是否存在</span></span><br><span class="line">validator.config = &#123;</span><br><span class="line">    first_name: <span class="string">'isNonEmpty'</span>,</span><br><span class="line">    age: <span class="string">'isNumber'</span>,</span><br><span class="line">    username: <span class="string">'isAlphaNum'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">validator.validate(data);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (validator.hasErrors()) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(validator.messages.join(<span class="string">"\n"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过策略模式，消除了大片的条件分支语句。将算法封装在独立的strategy中，使得它们易于切换，易于理解，易于扩展。同时，算法还可以复用在其他地方，从而避免许多重复的复制粘贴工作。</p>
+<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><blockquote>
+<p>代理模式为一个对象提供一种代理以控制对这个对象的访问。</p>
+</blockquote>
+<p>虚拟代理是我们最常用的代理模式,它把一些开销很大的对象，延迟到真正需要用到这个对象的时候才去创建</p>
+<p>虚拟代理实现图片预加载<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addImg = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>);</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(img);</span><br><span class="line">    <span class="keyword">return</span> &#123; </span><br><span class="line">        setSrc: <span class="function"><span class="keyword">function</span>(<span class="params">src</span>)</span>&#123;</span><br><span class="line">            img.src = src;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">var</span> proxyAddImg = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">    img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        addImg.setSrc(<span class="keyword">this</span>.src);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123; </span><br><span class="line">        setSrc: <span class="function"><span class="keyword">function</span>(<span class="params">src</span>)</span>&#123;</span><br><span class="line">            addImg.setSrc(<span class="string">'loading.gif'</span>); </span><br><span class="line">            img.src = src;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">proxyAddImg.setSrc(<span class="string">'demo.png'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>虚拟代理合并Http请求<br>我们可以通过一个代理函数来收集一段时间之内的请求，最后把请求合并到一起发送给服务器<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> proxySynData = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cache = [], <span class="comment">//缓存我们需要同步的内容</span></span><br><span class="line">        timer; <span class="comment">//定时器</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">ID</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!timer)&#123; <span class="comment">//定时器不存在就创建</span></span><br><span class="line">            timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                synData(cache.join()); <span class="comment">//同步合并后的数据</span></span><br><span class="line">                cache.length = <span class="number">0</span>; <span class="comment">//清空缓存</span></span><br><span class="line">                clearTimeout(timer); <span class="comment">//清除定时器</span></span><br><span class="line">                timer = <span class="literal">null</span>; <span class="comment">//方便垃圾回收</span></span><br><span class="line">            &#125;, <span class="number">2000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        cache.push(ID); <span class="comment">//存入缓存</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">var</span> list = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'input'</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, item; item = list[i]; i++)&#123;</span><br><span class="line">    item.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.checked)&#123;</span><br><span class="line">            proxySynData(<span class="keyword">this</span>.id);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>缓存代理<br>缓存代理就很好理解了，可以缓存一些开销很大的运算结果;如果你第二次执行函数的时候，传递了同样的参数，那么就直接使用缓存的结果,如果运算量很大，这可是不小的优化<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>, l = <span class="built_in">arguments</span>.length; i &lt; l; i++)&#123;</span><br><span class="line">        sum += <span class="built_in">arguments</span>[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> proxyAdd = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cache = &#123;&#125;; <span class="comment">//缓存运算结果的缓存对象</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.join.call(<span class="built_in">arguments</span>);<span class="comment">//把参数用逗号组成一个字符串作为“键”</span></span><br><span class="line">        <span class="keyword">if</span>(cache.hasOwnProperty(args))&#123;<span class="comment">//等价 args in cache</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'使用缓存结果'</span>);</span><br><span class="line">            <span class="keyword">return</span> cache[args];<span class="comment">//直接使用缓存对象的“值”</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'计算结果'</span>);</span><br><span class="line">        <span class="keyword">return</span> cache[args] = add.apply(<span class="keyword">this</span>,<span class="built_in">arguments</span>);<span class="comment">//使用本体函数计算结果并加入缓存</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(proxyAdd(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)); <span class="comment">//15</span></span><br><span class="line"><span class="built_in">console</span>.log(proxyAdd(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)); <span class="comment">//15</span></span><br><span class="line"><span class="built_in">console</span>.log(proxyAdd(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)); <span class="comment">//15</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><blockquote>
+<p>观察者模式又叫发布-订阅模式，它定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖它的对象都将得到通知。</p>
+</blockquote>
+<p>定义一个事件对象，它有以下功能</p>
+<ol>
+<li>监听事件（订阅公众号）</li>
+<li>触发事件（公众号发布）</li>
+<li>移除事件（取订公众号）</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// subscription.js</span></span><br><span class="line"><span class="keyword">var</span> CLEARED = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">var</span> nullListeners = &#123;</span><br><span class="line">  notify: <span class="function"><span class="keyword">function</span> <span class="title">notify</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createListenerCollection</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// the current/next pattern is copied from redux's createStore code.</span></span><br><span class="line">  <span class="comment">// <span class="doctag">TODO:</span> refactor+expose that code to be reusable here?</span></span><br><span class="line">  <span class="keyword">var</span> current = [];</span><br><span class="line">  <span class="keyword">var</span> next = [];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    clear: <span class="function"><span class="keyword">function</span> <span class="title">clear</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      next = CLEARED;</span><br><span class="line">      current = CLEARED;</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: <span class="function"><span class="keyword">function</span> <span class="title">notify</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> listeners = current = next;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</span><br><span class="line">        listeners[i]();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> next;</span><br><span class="line">    &#125;,</span><br><span class="line">    subscribe: <span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> isSubscribed = <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">if</span> (next === current) next = current.slice();</span><br><span class="line">      next.push(listener);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!isSubscribed || current === CLEARED) <span class="keyword">return</span>;</span><br><span class="line">        isSubscribed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (next === current) next = current.slice();</span><br><span class="line">        next.splice(next.indexOf(listener), <span class="number">1</span>);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Subscription = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Subscription</span>(<span class="params">store, parentSub, onStateChange</span>) </span>&#123;</span><br><span class="line">    _classCallCheck(<span class="keyword">this</span>, Subscription);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.store = store;</span><br><span class="line">    <span class="keyword">this</span>.parentSub = parentSub;</span><br><span class="line">    <span class="keyword">this</span>.onStateChange = onStateChange;</span><br><span class="line">    <span class="keyword">this</span>.unsubscribe = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.listeners = nullListeners;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Subscription.prototype.addNestedSub = <span class="function"><span class="keyword">function</span> <span class="title">addNestedSub</span>(<span class="params">listener</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.trySubscribe();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.listeners.subscribe(listener);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  Subscription.prototype.notifyNestedSubs = <span class="function"><span class="keyword">function</span> <span class="title">notifyNestedSubs</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.listeners.notify();</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  Subscription.prototype.isSubscribed = <span class="function"><span class="keyword">function</span> <span class="title">isSubscribed</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Boolean</span>(<span class="keyword">this</span>.unsubscribe);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  Subscription.prototype.trySubscribe = <span class="function"><span class="keyword">function</span> <span class="title">trySubscribe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.unsubscribe) &#123;</span><br><span class="line">      <span class="keyword">this</span>.unsubscribe = <span class="keyword">this</span>.parentSub ? <span class="keyword">this</span>.parentSub.addNestedSub(<span class="keyword">this</span>.onStateChange) : <span class="keyword">this</span>.store.subscribe(<span class="keyword">this</span>.onStateChange);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.listeners = createListenerCollection();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  Subscription.prototype.tryUnsubscribe = <span class="function"><span class="keyword">function</span> <span class="title">tryUnsubscribe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.unsubscribe) &#123;</span><br><span class="line">      <span class="keyword">this</span>.unsubscribe();</span><br><span class="line">      <span class="keyword">this</span>.unsubscribe = <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">this</span>.listeners.clear();</span><br><span class="line">      <span class="keyword">this</span>.listeners = nullListeners;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Subscription;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
+<p>Redux采用了观察者模式</p>
+<h4 id="createStore-rootReducer-initialState-applyMiddleware-thunkMiddleware"><a href="#createStore-rootReducer-initialState-applyMiddleware-thunkMiddleware" class="headerlink" title="createStore(rootReducer,initialState,applyMiddleware(thunkMiddleware))"></a>createStore(rootReducer,initialState,applyMiddleware(thunkMiddleware))</h4><p>返回值：<br>(1) dispatch(action): 用于action的分发，改变store里面的state<br>(2) subscribe(listener): 注册listener，store里面state发生改变后，执行该listener。返回unsubscrib()方法，用于注销当前listener。<br>(3) getState(): 读取store里面的state<br>(4) replaceReducer(): 替换reducer，改变state修改的逻辑</p>
+<p>所以store内部维护listener数组，用于存储所有通过store.subscribe注册的listener；当store tree更新后，依次执行数组中的listener<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected listener to be a function.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> isSubscribed = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  ensureCanMutateNextListeners();</span><br><span class="line">  nextListeners.push(listener);</span><br><span class="line">  了</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!isSubscribed) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isSubscribed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    ensureCanMutateNextListeners();</span><br><span class="line">    <span class="keyword">var</span> index = nextListeners.indexOf(listener);</span><br><span class="line">    nextListeners.splice(index, <span class="number">1</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>dispatch方法主要完成两件事：<br>1、根据action查询reducer中变更state的方法，更新store tree<br>2、变更store tree后，依次执行listener中所有响应函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!(<span class="number">0</span>, _isPlainObject2[<span class="string">'default'</span>])(action)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Actions must be plain objects. '</span> + <span class="string">'Use custom middleware for async actions.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> action.type === <span class="string">'undefined'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Actions may not have an undefined "type" property. '</span> + <span class="string">'Have you misspelled a constant?'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isDispatching) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Reducers may not dispatch actions.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    isDispatching = <span class="literal">true</span>;</span><br><span class="line">    currentState = currentReducer(currentState, action);</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    isDispatching = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//循环遍历，执行listener，通知数据改变</span></span><br><span class="line">  <span class="keyword">var</span> listeners = currentListeners = nextListeners;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> listener = listeners[i];</span><br><span class="line">    listener();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> action;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="在redux中，我们用connect-方法将react中的UI组件与redux的状态、事件关联起来。"><a href="#在redux中，我们用connect-方法将react中的UI组件与redux的状态、事件关联起来。" class="headerlink" title="在redux中，我们用connect()方法将react中的UI组件与redux的状态、事件关联起来。"></a>在redux中，我们用connect()方法将react中的UI组件与redux的状态、事件关联起来。</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Connect = <span class="function"><span class="keyword">function</span> (<span class="params">_Component</span>) </span>&#123;</span><br><span class="line">  _inherits(Connect, _Component);</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">  * 构造函数中，构造一个订阅对象，属性有this.store,方法this.onStateChange.bind(this)</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Connect</span>(<span class="params">props, context</span>) </span>&#123;</span><br><span class="line">    _classCallCheck(<span class="keyword">this</span>, Connect);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> _this = _possibleConstructorReturn(<span class="keyword">this</span>, _Component.call(<span class="keyword">this</span>, props, context));</span><br><span class="line"></span><br><span class="line">    _this.version = version;</span><br><span class="line">    _this.state = &#123;&#125;;</span><br><span class="line">    _this.renderCount = <span class="number">0</span>;</span><br><span class="line">    _this.store = props[storeKey] || context[storeKey];</span><br><span class="line">    _this.propsMode = <span class="built_in">Boolean</span>(props[storeKey]);</span><br><span class="line">    _this.setWrappedInstance = _this.setWrappedInstance.bind(_this);</span><br><span class="line"></span><br><span class="line">    (<span class="number">0</span>, _invariant2.default)(_this.store, <span class="string">'Could not find "'</span> + storeKey + <span class="string">'" in either the context or props of '</span> + (<span class="string">'"'</span> + displayName + <span class="string">'". Either wrap the root component in a &lt;Provider&gt;, '</span>) + (<span class="string">'or explicitly pass "'</span> + storeKey + <span class="string">'" as a prop to "'</span> + displayName + <span class="string">'".'</span>));</span><br><span class="line"></span><br><span class="line">    _this.initSelector();</span><br><span class="line">    _this.initSubscription();</span><br><span class="line">    <span class="keyword">return</span> _this;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ···</span><br><span class="line">  <span class="comment">// 调用store.subscribe(listener)注册监听方法，对store的变化进行订阅，当store变化的时候，更新渲染view</span></span><br><span class="line">  Connect.prototype.componentDidMount = <span class="function"><span class="keyword">function</span> <span class="title">componentDidMount</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!shouldHandleStateChanges) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">this</span>.subscription.trySubscribe(); <span class="comment">// //实际调用this.store.subscribe(this.onStateChange);</span></span><br><span class="line">    <span class="keyword">this</span>.selector.run(<span class="keyword">this</span>.props);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.selector.shouldComponentUpdate) <span class="keyword">this</span>.forceUpdate();</span><br><span class="line">  &#125;;</span><br><span class="line">   ···</span><br><span class="line"></span><br><span class="line">  Connect.prototype.componentWillUnmount = <span class="function"><span class="keyword">function</span> <span class="title">componentWillUnmount</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.subscription) <span class="keyword">this</span>.subscription.tryUnsubscribe(); <span class="comment">// 取消订阅</span></span><br><span class="line">    <span class="keyword">this</span>.subscription = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.notifyNestedSubs = noop;</span><br><span class="line">    <span class="keyword">this</span>.store = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.selector.run = noop;</span><br><span class="line">    <span class="keyword">this</span>.selector.shouldComponentUpdate = <span class="literal">false</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">    ···</span><br><span class="line">  <span class="comment">//初始化订阅逻辑</span></span><br><span class="line">  Connect.prototype.initSubscription = <span class="function"><span class="keyword">function</span> <span class="title">initSubscription</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!shouldHandleStateChanges) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> parentSub = (<span class="keyword">this</span>.propsMode ? <span class="keyword">this</span>.props : <span class="keyword">this</span>.context)[subscriptionKey];</span><br><span class="line">    <span class="keyword">this</span>.subscription = <span class="keyword">new</span> _Subscription2.default(<span class="keyword">this</span>.store, parentSub, <span class="keyword">this</span>.onStateChange.bind(<span class="keyword">this</span>));  <span class="comment">//调用的是Subscription.js中方法,向store内部注册一个listener---this.onStateChange.bind(this)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.notifyNestedSubs = <span class="keyword">this</span>.subscription.notifyNestedSubs.bind(<span class="keyword">this</span>.subscription);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  Connect.prototype.onStateChange = <span class="function"><span class="keyword">function</span> <span class="title">onStateChange</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.selector.run(<span class="keyword">this</span>.props);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.selector.shouldComponentUpdate) &#123;</span><br><span class="line">      <span class="keyword">this</span>.notifyNestedSubs();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.componentDidUpdate = <span class="keyword">this</span>.notifyNestedSubsOnComponentDidUpdate;</span><br><span class="line">      <span class="keyword">this</span>.setState(dummyState);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">···</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Connect;</span><br><span class="line">&#125;(_react.Component);</span><br></pre></td></tr></table></figure>
+<h2 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h2><blockquote>
+<p>在不改变对象自身的基础上，在程序运行期间给对象动态地添加一些额外职责</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 给window绑定onload事件</span></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _onload = <span class="built_in">window</span>.onload || <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;  <span class="comment">//维护中间变量，但是如果装饰链太长，或需要的装饰函数太多，这些中间变量的数量就会越来越多</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    _onload()</span><br><span class="line">    alert(<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可能会存在this被劫持问题</span></span><br><span class="line"><span class="keyword">var</span> getId = <span class="built_in">document</span>.getElementById; <span class="comment">//全局函数，this指向window</span></span><br><span class="line"><span class="built_in">document</span>.getElementById = <span class="function"><span class="keyword">function</span>(<span class="params">ID</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> getId(ID);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>); <span class="comment">//this预期指向document</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//需要手动把document当做上下文this传入getId</span></span><br></pre></td></tr></table></figure>
+<h3 id="AOP装饰函数"><a href="#AOP装饰函数" class="headerlink" title="AOP装饰函数"></a>AOP装饰函数</h3><blockquote>
+<p>AOP（Aspect Oriented Programming）面向切面编程<br>把一些与核心业务逻辑无关的功能抽离出来<br>再通过“动态织入”方式掺入业务逻辑模块</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前置装饰</span></span><br><span class="line"><span class="built_in">Function</span>.prototype.before = <span class="function"><span class="keyword">function</span>(<span class="params">beforeFunc</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>; <span class="comment">//保存原函数的引用</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">//返回了了包含原函数和新函数的代理函数</span></span><br><span class="line">        beforeFunc.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); <span class="comment">// 执行新函数</span></span><br><span class="line">        <span class="keyword">return</span> that.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); <span class="comment">//执行原函数并返回原函数的执行结果</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.getElementById = <span class="built_in">document</span>.getElementById.before(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alet(<span class="number">1</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个组件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//以往从状态树取出对应的数据，通过props传给组件使用通过react-redux自带的connect()方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> connect(<span class="function"><span class="params">state</span> =&gt;</span> (&#123;<span class="attr">todos</span>: state.todos&#125;))(Home);</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用装饰器的话就变成这样，好像没那么复杂</span></span><br><span class="line">@connect(<span class="function"><span class="params">state</span> =&gt;</span> (&#123; <span class="attr">todos</span>: state.todos &#125;))</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h2><p>适配器模式是作为两个不兼容的接口之间的桥梁，它结合了两个独立接口的功能。</p>
+<p>假设我们正在编写一个渲染广东省地图的页面，目前从第三方资源里获得了广东省的所有城市以及它们所对应的ID,并且成功地渲染到页面中：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getGuangdongCity = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> GuangdongCity = [</span><br><span class="line">       &#123;</span><br><span class="line">          name:<span class="string">'shenzhen'</span>,</span><br><span class="line">          id  : <span class="string">'11'</span></span><br><span class="line">       &#125;,</span><br><span class="line">       &#123;</span><br><span class="line">         name:<span class="string">'guangzhou'</span>,</span><br><span class="line">         id:<span class="number">12</span></span><br><span class="line">       &#125;</span><br><span class="line">  ];</span><br><span class="line">  <span class="keyword">return</span> GuangdongCity;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> render  = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'starting render Guangdong map'</span>);</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="built_in">JSON</span>.stringify(fn()));</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* var GuangdongCity = &#123;</span></span><br><span class="line"><span class="comment">//                      shenzhen:11,</span></span><br><span class="line"><span class="comment">//                      guangzhou:12,</span></span><br><span class="line"><span class="comment">//                      zhuhai:13</span></span><br><span class="line"><span class="comment">//                     &#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> addressAdapter = <span class="function"><span class="keyword">function</span> (<span class="params">oldAddressfn</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> address = &#123;&#125;,</span><br><span class="line">    oldAddress = oldAddressfn();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span> , c; c = oldAddress[i++];)&#123;</span><br><span class="line">        address[c.name] = c.id;  <span class="comment">//此处我们遍历老数据把它们添加到空对象中然后返回这个对象</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">render(addressAdapter(getGuangdongCity));</span><br></pre></td></tr></table></figure></p>
+<p>使用适配器模式可以解决参数类型有些许不一致造成的问题。</p>
+<p>redux为了和react适配，所有有 mapStateToProps()这个函数来把state转为Props外部状态，这样就可以从外部又回到组件内了</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/11/二叉树那些事儿/" rel="next" title="二叉树那些事儿">
+                <i class="fa fa-chevron-left"></i> 二叉树那些事儿
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/18/前端基础知识回顾/" rel="prev" title="前端基础知识回顾">
+                前端基础知识回顾 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59218ccef0abff95" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="PAJK-FE" />
+          <p class="site-author-name" itemprop="name">PAJK-FE</p>
+           
+              <p class="site-description motion-element" itemprop="description">平安健康前端博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/PAJK-FE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#策略模式"><span class="nav-number">1.</span> <span class="nav-text">策略模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">2.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#观察者模式"><span class="nav-number">3.</span> <span class="nav-text">观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#createStore-rootReducer-initialState-applyMiddleware-thunkMiddleware"><span class="nav-number">3.0.1.</span> <span class="nav-text">createStore(rootReducer,initialState,applyMiddleware(thunkMiddleware))</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在redux中，我们用connect-方法将react中的UI组件与redux的状态、事件关联起来。"><span class="nav-number">3.0.2.</span> <span class="nav-text">在redux中，我们用connect()方法将react中的UI组件与redux的状态、事件关联起来。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰者模式"><span class="nav-number">4.</span> <span class="nav-text">装饰者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP装饰函数"><span class="nav-number">4.1.</span> <span class="nav-text">AOP装饰函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适配器模式"><span class="nav-number">5.</span> <span class="nav-text">适配器模式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-cube"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PAJK-FE</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 91710, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 91710, xid: "2018/05/11/浅谈js设计模式/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/91710/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("q6Ia0iMpPtRYJ7vPSbtJfSHn-gzGzoHsz", "8mSczUyAUNy071zbyEtjJFG5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

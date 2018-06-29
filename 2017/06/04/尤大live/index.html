@@ -1,0 +1,996 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="browser," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="vue2.0 源码vue2.0 源码学习。 框架选型框架选型不谈场景都是刷流氓，不同的场景下、开发者群体、偏好不一致，多种方案的并存是必然的有益的。如何选型：经验和对框架工具背后想要解决的问题深入理解 组件主流框架都以组件作为基本的抽象单元，组件的发展史 page-&amp;gt;application，模块封装.react 揭示了组件可以是函数，组件的分类  接入型 container 展示型 comp">
+<meta name="keywords" content="browser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="尤大live笔记">
+<meta property="og:url" content="https://pajk-fe.github.io/2017/06/04/尤大live/index.html">
+<meta property="og:site_name" content="PAJK-FE BLOG">
+<meta property="og:description" content="vue2.0 源码vue2.0 源码学习。 框架选型框架选型不谈场景都是刷流氓，不同的场景下、开发者群体、偏好不一致，多种方案的并存是必然的有益的。如何选型：经验和对框架工具背后想要解决的问题深入理解 组件主流框架都以组件作为基本的抽象单元，组件的发展史 page-&amp;gt;application，模块封装.react 揭示了组件可以是函数，组件的分类  接入型 container 展示型 comp">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-29T08:01:26.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="尤大live笔记">
+<meta name="twitter:description" content="vue2.0 源码vue2.0 源码学习。 框架选型框架选型不谈场景都是刷流氓，不同的场景下、开发者群体、偏好不一致，多种方案的并存是必然的有益的。如何选型：经验和对框架工具背后想要解决的问题深入理解 组件主流框架都以组件作为基本的抽象单元，组件的发展史 page-&amp;gt;application，模块封装.react 揭示了组件可以是函数，组件的分类  接入型 container 展示型 comp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'H3PXN7RGPT',
+      apiKey: 'de272b1fc94c835c20b7de67668fa4ea',
+      indexName: 'PAJK-FE',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://pajk-fe.github.io/2017/06/04/尤大live/"/>
+
+
+
+
+
+  <title> 尤大live笔记 | PAJK-FE BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73365165-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAJK-FE BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我是副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://pajk-fe.github.io/2017/06/04/尤大live/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PAJK-FE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAJK-FE BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                尤大live笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T15:30:36+00:00">
+                2017-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-user-o"></i>
+            </span>
+            
+              <span>peanut</span/>
+            
+          
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/browser/" itemprop="url" rel="index">
+                    <span itemprop="name">browser</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/04/尤大live/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/06/04/尤大live/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2017/06/04/尤大live/" class="leancloud_visitors" data-flag-title="尤大live笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="vue2-0-源码"><a href="#vue2-0-源码" class="headerlink" title="vue2.0 源码"></a>vue2.0 源码</h3><p><a href="http://hcysun.me/2017/03/03/Vue源码学习/" target="_blank" rel="noopener">vue2.0 源码学习</a>。</p>
+<h3 id="框架选型"><a href="#框架选型" class="headerlink" title="框架选型"></a>框架选型</h3><p>框架选型不谈场景都是刷流氓，不同的场景下、开发者群体、偏好不一致，多种方案的并存是必然的有益的。<br>如何选型：经验和对框架工具背后想要解决的问题深入理解</p>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>主流框架都以组件作为基本的抽象单元，组件的发展史 page-&gt;application，模块封装.<br>react 揭示了组件可以是函数，<br>组件的分类</p>
+<ul>
+<li>接入型 container</li>
+<li>展示型 component</li>
+<li>交互型 比如各类加强版的表单组件，通常强调复用</li>
+<li>功能型 比如 <code>&lt;router-view&gt;</code>，<code>&lt;transition&gt;</code>，作为一种扩展、抽象机制存在。 </li>
+</ul>
+<p>模板和 jsx 对比，jsx 灵活性高，模板在以展示型为主的场景下不差，jsx 在功能性组件的书写远超模板<br>colocation: 把该放的东西放一起和以前的 html、js、css 分离相对应</p>
+<h3 id="变化侦测机制和渲染机制"><a href="#变化侦测机制和渲染机制" class="headerlink" title="变化侦测机制和渲染机制"></a>变化侦测机制和渲染机制</h3><p>渲染中的申明式和命令式<br>命令式的维护问题，申明式申明数据和 dom 的映射关系，不需要手动去维护操作<br>view = render(state)<br>vue的模板也是编译成渲染函数，模板和 jsx 的本质是一样的，具体实现可以是 vdom 也可以是细粒度的绑定如 vue1；<br>变化侦测：<a href="https://docs.google.com/presentation/d/1_BlJxudppfKmAtfbNIcqNwzrC5vLrR_h1e09apcpdNY/edit#slide=id.g19eebb1966_0_346" target="_blank" rel="noopener">变化侦测 ppt</a>。</p>
+<p><div onclick="clickHandler"></div> 被人诟病，为啥 vue  的声明式写法就是推崇的？ 前者的作用域的全局的，vue 模板是在特定的作用域中。另外的原因是：colocation，jsx 或模板中处理器是在相关联的文件中，还是维护性问题。<br>变化侦测分为push 和 pull，react 中的setState和 angular1中的脏检查都是pull，对于数据的变化，要有钩子来触发更新，暴力的比对如 react 中的 vdom 的 diff，暴力的遍历比对，找出了变化的部分；push如 vue 的响应式和 rxjs，在数据变动后，能确切的知道具体什么变了，相对细粒度的更新，pull 是粗粒度的，所以要帮助 pull 来提高性能，如 purecomponent 、shouldComponenetUpdata等，push 是细粒度的，我们知道的信息多一点，代价就是每一个绑定都要有 watch，带来内存的开销和依赖追踪的开销。<br>vue2选择中等粒度的更新，组件级别是 push，每一个组件是一个响应式的 watcher，当数据变化的直接知道具体哪些组件变了，组件内部是 vdom 的比对<br>本质的区别是：用侦测成本换一定程度的自动优化，各有利弊</p>
+<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3><p>flux reflux redux mobx vuex rxjs<br>本质：从原事件映射到状态的改变再到 ui 的变化，申明式的渲染已经解决了状态到 ui 的变化，状态管理就是如何管理将事件源映射到状态变化的这个过程，如何将映射的过程从视图组件剥离出来，如何组织这部分代码，提高维护性，这是状态管理要解决的问题。<br>redux 和 mobx，两种范式： redux 函数式、immutable；mobx 和 vuex数据可以变，响应式，已经做好了申明式的副作用<br><a href="https://jsfiddle.net/yyx990803/0a22ojps/" target="_blank" rel="noopener">把 Vue 当 redux 用</a><br><a href="https://jsfiddle.net/yyx990803/f5a24dk3/" target="_blank" rel="noopener">把 Vue 当 MobX 用</a><br>都没有回答如何处理异步，redux 中间件生态，vuex 和 mobx action 中搞<br>简单的 curd 应用没必要，复杂的如实时服务端推送，竞态，rxjs<br>组件的全局状态和局部状态如何区分，没有很明显的界限，Elm 中的解决方案</p>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>url 映射到组件树的过程<br>react-router 4 用组件自身来做路由，功能性组件，路由表分散，耦合在组件中<br>web 路由和 app 路由</p>
+<h3 id="css-方案"><a href="#css-方案" class="headerlink" title="css 方案"></a>css 方案</h3><p>主流的 CSS 方案</p>
+<ul>
+<li>跟 JS 完全解耦，靠预处理器和比如 BEM 这样的规范来保持可维护性，偏传统</li>
+<li>CSS Modules，依然是 CSS，但是通过编译来避免 CSS 类名的全局冲突</li>
+<li>各类 CSS-in-JS 方案，React 社区为代表，比较激进</li>
+<li>Vue 的单文件组件 CSS，或是 Angular 的组件 CSS（写在装饰器里面），一种比较折中的方案</li>
+</ul>
+<p>传统 css 的一些问题：</p>
+<ol>
+<li>作用域</li>
+<li>Critical CSS</li>
+<li>Atomic CSS</li>
+<li>分发复用</li>
+<li>跨平台复用</li>
+</ol>
+<p><a href="https://speakerdeck.com/vjeux/react-css-in-js" target="_blank" rel="noopener">css-in-js</a></p>
+<h3 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h3><p>grunt gulp webpack<br>构建工具解决的其实是几方面的问题：</p>
+<ul>
+<li>任务的自动化</li>
+<li>开发体验和效率（新的语言功能，语法糖，hot reload 等等）</li>
+<li>部署相关的需求</li>
+<li>编译时优化</li>
+</ul>
+<p><a href="https://www.zhihu.com/question/20790576" target="_blank" rel="noopener">关于部署</a></p>
+<h3 id="服务端数据通信"><a href="#服务端数据通信" class="headerlink" title="服务端数据通信"></a>服务端数据通信</h3><p>传统restful接口、数据直连、实时推送<br>实时推送方案：Meteor<br>数据关联： GraphQL,复杂数据的关联比 restful 表达力更强,</p>
+<h3 id="服务端渲染"><a href="#服务端渲染" class="headerlink" title="服务端渲染"></a>服务端渲染</h3><p><a href="ssr.vuejs.org">vue 服务端渲染</a></p>
+<h3 id="跨平台渲染"><a href="#跨平台渲染" class="headerlink" title="跨平台渲染"></a>跨平台渲染</h3><p>weex rn, 框架的渲染机制与 dom 解耦，不一定要 vdom，把框架节点操作与原生的渲染引擎对接</p>
+<h3 id="新规范"><a href="#新规范" class="headerlink" title="新规范"></a>新规范</h3><p><a href="https://www.zhihu.com/question/58731753" target="_blank" rel="noopener">web component新规范</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/browser/" rel="tag"># browser</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/03/babel/" rel="next" title="babel拾遗">
+                <i class="fa fa-chevron-left"></i> babel拾遗
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/08/Chrome-DevTools调试IOS/" rel="prev" title="如何用 Chrome DevTools 调试 iOS Safari">
+                如何用 Chrome DevTools 调试 iOS Safari <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59218ccef0abff95" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="PAJK-FE" />
+          <p class="site-author-name" itemprop="name">PAJK-FE</p>
+           
+              <p class="site-description motion-element" itemprop="description">平安健康前端博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/PAJK-FE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue2-0-源码"><span class="nav-number">1.</span> <span class="nav-text">vue2.0 源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架选型"><span class="nav-number">2.</span> <span class="nav-text">框架选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件"><span class="nav-number">3.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变化侦测机制和渲染机制"><span class="nav-number">4.</span> <span class="nav-text">变化侦测机制和渲染机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态管理"><span class="nav-number">5.</span> <span class="nav-text">状态管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由"><span class="nav-number">6.</span> <span class="nav-text">路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css-方案"><span class="nav-number">7.</span> <span class="nav-text">css 方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建工具"><span class="nav-number">8.</span> <span class="nav-text">构建工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端数据通信"><span class="nav-number">9.</span> <span class="nav-text">服务端数据通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务端渲染"><span class="nav-number">10.</span> <span class="nav-text">服务端渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨平台渲染"><span class="nav-number">11.</span> <span class="nav-text">跨平台渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新规范"><span class="nav-number">12.</span> <span class="nav-text">新规范</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-cube"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PAJK-FE</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 91710, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 91710, xid: "2017/06/04/尤大live/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/91710/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("q6Ia0iMpPtRYJ7vPSbtJfSHn-gzGzoHsz", "8mSczUyAUNy071zbyEtjJFG5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PAJK, FE" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前端基础知识回顾一段html代码 123456789101112&amp;lt;body&amp;gt;  &amp;lt;a href=&apos;https://www.jk.cn/&apos;&amp;gt;点击取消跳转&amp;lt;/a&amp;gt;  &amp;lt;ul&amp;gt;    &amp;lt;li&amp;gt;红灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;绿灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;黄灯&amp;lt;/li&amp;gt;  &amp;lt;/ul&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端基础知识回顾">
+<meta property="og:url" content="https://pajk-fe.github.io/2018/05/18/前端基础知识回顾/index.html">
+<meta property="og:site_name" content="PAJK-FE BLOG">
+<meta property="og:description" content="前端基础知识回顾一段html代码 123456789101112&amp;lt;body&amp;gt;  &amp;lt;a href=&apos;https://www.jk.cn/&apos;&amp;gt;点击取消跳转&amp;lt;/a&amp;gt;  &amp;lt;ul&amp;gt;    &amp;lt;li&amp;gt;红灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;绿灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;黄灯&amp;lt;/li&amp;gt;  &amp;lt;/ul&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-29T08:01:26.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端基础知识回顾">
+<meta name="twitter:description" content="前端基础知识回顾一段html代码 123456789101112&amp;lt;body&amp;gt;  &amp;lt;a href=&apos;https://www.jk.cn/&apos;&amp;gt;点击取消跳转&amp;lt;/a&amp;gt;  &amp;lt;ul&amp;gt;    &amp;lt;li&amp;gt;红灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;绿灯&amp;lt;/li&amp;gt;    &amp;lt;li&amp;gt;黄灯&amp;lt;/li&amp;gt;  &amp;lt;/ul&amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'H3PXN7RGPT',
+      apiKey: 'de272b1fc94c835c20b7de67668fa4ea',
+      indexName: 'PAJK-FE',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://pajk-fe.github.io/2018/05/18/前端基础知识回顾/"/>
+
+
+
+
+
+  <title> 前端基础知识回顾 | PAJK-FE BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73365165-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAJK-FE BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我是副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://pajk-fe.github.io/2018/05/18/前端基础知识回顾/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PAJK-FE">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAJK-FE BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                前端基础知识回顾
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T14:23:41+00:00">
+                2018-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-user-o"></i>
+            </span>
+            
+              <span>阿策</span/>
+            
+          
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/基础知识/" itemprop="url" rel="index">
+                    <span itemprop="name">基础知识</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/18/前端基础知识回顾/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2018/05/18/前端基础知识回顾/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2018/05/18/前端基础知识回顾/" class="leancloud_visitors" data-flag-title="前端基础知识回顾">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前端基础知识回顾"><a href="#前端基础知识回顾" class="headerlink" title="前端基础知识回顾"></a>前端基础知识回顾</h2><p>一段html代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'https://www.jk.cn/'</span>&gt;</span>点击取消跳转<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>红灯<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>绿灯<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>黄灯<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> nodeList = <span class="built_in">document</span>.querySelectorAll(<span class="string">'ul li'</span>)</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> colorList = [<span class="string">'red'</span>, <span class="string">'green'</span>, <span class="string">'orange'</span>]</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="一、数组"><a href="#一、数组" class="headerlink" title="一、数组"></a>一、数组</h4><ol>
+<li><p>slice() 和 splice()</p>
+<blockquote>
+<p>colorList.slice(1) –&gt; [‘green’, ‘orange’]<br>colorList.slice(-2) –&gt; [‘green’, ‘orange’]<br>colorList.slice(1, 2) –&gt; [‘green’]<br>colorList.splice(2, 1) –&gt; [“orange”]; colorList –&gt; [‘red’, ‘green’]  </p>
+<p>nodeList.slice(1) –&gt; Uncaught TypeError: nodeList.slice is not a function<br>Array.prototype.slice.call(nodeList, 1) –&gt; [li, li]  </p>
+</blockquote>
+</li>
+<li><p>isArray 及 Polyfill</p>
+<blockquote>
+<p>Array.isArray(colorList) –&gt; true<br>Array.isArray(nodeList) –&gt; false  </p>
+</blockquote>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">if</span> (!<span class="built_in">Array</span>.isArray) &#123;  </span><br><span class="line">	  <span class="built_in">Array</span>.isArray = <span class="function"><span class="keyword">function</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(arg) === <span class="string">'[object Array]'</span>;</span><br><span class="line">	  &#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">3. ArrayLike =&gt; Array 几种方式</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	&gt; var arr = Array.from(nodeList); Array.isArray(arr) --&gt; true  </span></span><br><span class="line"><span class="string">	&gt; var arr = [...nodeList]; Array.isArray(arr) --&gt; true  </span></span><br><span class="line"><span class="string">	&gt; var arr = Array.prototype.slice.call(nodeList); Array.isArray(arr) --&gt; true  </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">#### 二、事件监听</span></span><br><span class="line"><span class="string">1. DOM0、DOM2、DOM3 </span></span><br><span class="line"><span class="string">	&gt; DOM0 注意 onclick 大小写 document.querySelector('ul').onclick = function () &#123; alert('hello world') &#125;  </span></span><br><span class="line"><span class="string">	&gt; DOM2是通过addEventListener绑定的事件, 还有IE下的DOM2事件通过attachEvent绑定</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">2. addEventListener第三个参数如果是 useCapture: true 和 false 分别代表什么？事件传播方式(事件冒泡、事件捕获)，分别讲述两者不同</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	&gt; target.addEventListener(type, listener, useCapture);</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">3. 两种事件传播方式的执行顺序，console.log() 执行顺序 (默默的思念旭明1秒钟)</span></span><br><span class="line"><span class="string">   </span></span><br><span class="line"><span class="string">    &gt; 1：事件捕获， 2：处于目标阶段， 3：事件冒泡阶段</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	`</span><span class="string">``</span> javascript</span><br><span class="line">	<span class="keyword">var</span> ulEventTarget = <span class="built_in">document</span>.querySelector(<span class="string">'ul'</span>)</span><br><span class="line">		</span><br><span class="line">	ulEventTarget.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">'ul'</span>, <span class="string">'捕获'</span>)</span><br><span class="line">	&#125;, <span class="literal">true</span>)</span><br><span class="line">		</span><br><span class="line">	ulEventTarget.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">'ul'</span>, <span class="string">'冒泡'</span>)</span><br><span class="line">	&#125;, <span class="literal">false</span>)</span><br><span class="line">		</span><br><span class="line">	nodeList[<span class="number">0</span>].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">'li'</span>, <span class="string">'冒泡'</span>)</span><br><span class="line">	&#125;, <span class="literal">false</span>)</span><br><span class="line">		</span><br><span class="line">	nodeList[<span class="number">0</span>].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log(<span class="string">'li'</span>, <span class="string">'捕获'</span>)</span><br><span class="line">	&#125;, <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>点击穿透 stopPropagation() 取消冒泡或者捕获 及 取消跳转：preventDefault() 取消默认事件；</p>
+</li>
+</ol>
+<h4 id="三、作用域-–-最小访问"><a href="#三、作用域-–-最小访问" class="headerlink" title="三、作用域 – 最小访问"></a>三、作用域 – 最小访问</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodeList.length; i++) &#123;</span><br><span class="line">  nodeList[i].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.target.style.color = colorList[i]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>i –&gt; 3  </li>
+<li>colorList[i] –&gt; undefined  </li>
+<li><p>如何解决</p>
+<blockquote>
+<p>3.1 简单方便的绑定一次，复制两次，改一改，优点：缓解脱发</p>
+</blockquote>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">nodeList[<span class="number">0</span>].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.target.style.color = colorList[<span class="number">0</span>]</span><br><span class="line">  &#125;)</span><br><span class="line">nodeList[<span class="number">1</span>].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.target.style.color = colorList[<span class="number">1</span>]</span><br><span class="line">  &#125;)</span><br><span class="line">nodeList[<span class="number">2</span>].addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.target.style.color = colorList[<span class="number">2</span>]</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>&gt; 3.2 发现代码冗余后，抽取一个公共方法出来，一个莫名其妙的闭包就诞生了
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> handleEvent = <span class="function"><span class="keyword">function</span> (<span class="params">color</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.target.style.color = color</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">nodeList[<span class="number">0</span>].addEventListener(<span class="string">'click'</span>, handleEvent(colorList[<span class="number">0</span>]))</span><br><span class="line">nodeList[<span class="number">1</span>].addEventListener(<span class="string">'click'</span>, handleEvent(colorList[<span class="number">1</span>]))</span><br><span class="line">nodeList[<span class="number">2</span>].addEventListener(<span class="string">'click'</span>, handleEvent(colorList[<span class="number">2</span>]))</span><br></pre></td></tr></table></figure>
+
+&gt; 3.3 发现可以帅帅的写个循环，发现代码行数竟然没啥变化，好沮丧啊！  
+&gt; 闭包 密闭的空间，块级作用域  
+&gt; 执行方法的时候，可以创建一个新方法，同时开辟一块空间  
+&gt; 此时新函数，保留了创建函数时的所需要参数 color 的值  
+&gt; (录制了案发现场，储存 color 路过时的痕迹)
+&gt;   
+&gt; console.log(this) --&gt; `&lt;li&gt;红灯&lt;/li&gt;`  
+&gt; console.log(this) --&gt; `&lt;li&gt;绿灯&lt;/li&gt;`  
+&gt; console.log(this) --&gt; `&lt;li&gt;黄灯&lt;/li&gt;`  
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> handleEvent = <span class="function"><span class="keyword">function</span> (<span class="params">color</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.target.style.color = color</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodeList.length; i++) &#123;</span><br><span class="line">  nodeList[i].addEventListener(<span class="string">'click'</span>, handleEvent(colorList[i]))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h4 id="四、ES6"><a href="#四、ES6" class="headerlink" title="四、ES6"></a>四、ES6</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> len = nodeList.length</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">  nodeList[i].addEventListener(<span class="string">'click'</span>, e =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">    e.target.style.color = colorList[i]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>箭头函数 </p>
+<blockquote>
+<p>console.log(this) –&gt; Window  (指向外层 this)</p>
+</blockquote>
+</li>
+<li><p>阐述 let &amp; const &amp; var 区别、作用.</p>
+<blockquote>
+<p>let、const 块级作用域， const/let 不/允许重新赋值.<br>colorList[i] –&gt; ‘red’<br>colorList[i] –&gt; ‘green’<br>colorList[i] –&gt; ‘orange’</p>
+</blockquote>
+</li>
+<li><p>细节 避免重复查询数组长度(length)</p>
+<blockquote>
+<p>const len = nodeList.length  </p>
+</blockquote>
+</li>
+<li><p>for of 及 array.entries() 的应用</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleEvent = <span class="function"><span class="params">color</span> =&gt;</span> e =&gt; e.target.style.color = color</span><br><span class="line"><span class="keyword">const</span> iterator = nodeList.entries();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> [i, node] <span class="keyword">of</span> iterator) &#123;</span><br><span class="line">  node.addEventListener(<span class="string">'click'</span>, handleEvent(colorList[i]))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="五、类、oop"><a href="#五、类、oop" class="headerlink" title="五、类、oop"></a>五、类、oop</h4><ol>
+<li><p>类的定义</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Light</span>(<span class="params">dom, color = <span class="string">"grey"</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.color = color</span><br><span class="line">  <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">this</span>.dom = dom</span><br><span class="line">  <span class="keyword">this</span>.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">this</span>.turnOff = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">this</span>.switch = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight ? <span class="keyword">this</span>.turnOff() : <span class="keyword">this</span>.turnOn()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事件代理 及 switch case 使用 &amp;&amp; LampBox.red.switch === LampBox.green.switch ？</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> LampBox = &#123;&#125;</span><br><span class="line"></span><br><span class="line">colorList.forEach(<span class="function">(<span class="params">color, index</span>) =&gt;</span> &#123;</span><br><span class="line">  LampBox[color] = <span class="keyword">new</span> Light(<span class="built_in">document</span>.querySelectorAll(<span class="string">'li'</span>)[index], color)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// console.log(LampBox.red.switch === LampBox.green.switch) false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'ul'</span>).addEventListener(<span class="string">'click'</span>, e =&gt; &#123;</span><br><span class="line">	<span class="keyword">switch</span> (e.target.innerText) &#123;</span><br><span class="line">	  <span class="keyword">case</span> <span class="string">'红灯'</span>: </span><br><span class="line">	    LampBox.red.switch()</span><br><span class="line">	    <span class="keyword">break</span>;</span><br><span class="line">	  <span class="keyword">case</span> <span class="string">'绿灯'</span>: </span><br><span class="line">	    LampBox.green.switch()</span><br><span class="line">	    <span class="keyword">break</span>;</span><br><span class="line">	  <span class="keyword">case</span> <span class="string">'黄灯'</span>: </span><br><span class="line">	    LampBox.orange.switch()</span><br><span class="line">	    <span class="keyword">break</span>;</span><br><span class="line">	  <span class="keyword">default</span>:</span><br><span class="line">	    <span class="built_in">console</span>.warn(<span class="string">'bulubulu'</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>&gt; 借助 prototype 修改 Light
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Light</span>(<span class="params">dom, color = <span class="string">"grey"</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.color = color</span><br><span class="line">  <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">this</span>.dom = dom</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Light.prototype.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Light.prototype.turnOff = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Light.prototype.switch = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.isLight ? <span class="keyword">this</span>.turnOff() : <span class="keyword">this</span>.turnOn()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ol start="3">
+<li><p>Map 操作 get、set</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodeList.length; i++) &#123;</span><br><span class="line">  map.set(nodeList[i], <span class="keyword">new</span> Light(nodeList[i], colorList[i]))</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'ul'</span>).addEventListener(<span class="string">'click'</span>, e =&gt; map.get(e.target).switch())</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>css 动画、异步操作</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doScaledTimeout</span>(<span class="params">i, time, cb</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    cb &amp;&amp; cb(i)</span><br><span class="line">  &#125;, time);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> createLight = <span class="function">(<span class="params">e, color</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (color !== <span class="string">'orange'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Light(e, color)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> yellowL = <span class="keyword">new</span> Light(e, color)</span><br><span class="line">  </span><br><span class="line">  yellowL.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// css 动画</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transition = <span class="string">'color'</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transitionDuration = <span class="string">'.5s'</span></span><br><span class="line">    </span><br><span class="line">	<span class="comment">// color: 1000 yellow 1500 grey 2000 yellow 2500 grey 3000 yellow 3500 grey s</span></span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; <span class="number">3</span>) &#123;</span><br><span class="line">      <span class="comment">// 异步操作</span></span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">      &#125;, <span class="number">1000</span>)</span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">      &#125;, <span class="number">500</span>)</span><br><span class="line">      i++</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> yellowL</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodeList.length; i++) &#123;</span><br><span class="line">  map.set(nodeList[i], createLight(nodeList[i], colorList[i]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'ul'</span>).addEventListener(<span class="string">'click'</span>, e =&gt; map.get(e.target).switch())</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (i &lt; <span class="number">3</span>) &#123;</span><br><span class="line">  <span class="comment">// 需要闭包</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">  &#125;, i * <span class="number">1000</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">    <span class="comment">// i =&gt; 3</span></span><br><span class="line">    <span class="keyword">if</span> (i === <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, i * <span class="number">1000</span> + <span class="number">500</span>);</span><br><span class="line">  i++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (i &lt; <span class="number">3</span>) &#123;</span><br><span class="line">  doScaledTimeout(i, i * <span class="number">1000</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">  &#125;)</span><br><span class="line">  doScaledTimeout(i, i * <span class="number">1000</span> + <span class="number">500</span>, (i) =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">    <span class="keyword">if</span> (i === <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  i++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ol start="5">
+<li><p>Promise 解决方案</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">turnOn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">      resolve(<span class="number">500</span>)</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;.bind(<span class="keyword">this</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">turnOff</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">      resolve()</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">  &#125;.bind(<span class="keyword">this</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doPromiseTimeout</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">        resolve(<span class="number">500</span>)</span><br><span class="line">      &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">delayMS</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">          resolve(delayMS)</span><br><span class="line">        &#125;, delayMS);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> createLight = <span class="function">(<span class="params">e, color</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (color !== <span class="string">'orange'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Light(e, color)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> yellowL = <span class="keyword">new</span> Light(e, color)</span><br><span class="line"></span><br><span class="line">  yellowL.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// css 动画</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transition = <span class="string">'color'</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transitionDuration = <span class="string">'.5s'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> doTurnOn = doPromiseTimeout.bind(<span class="keyword">this</span>)</span><br><span class="line">    doTurnOn(<span class="number">0</span>)</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> doTurnOn(<span class="number">1</span>))</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> doTurnOn(<span class="number">2</span>))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> yellowL</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodeList.length; i++) &#123;</span><br><span class="line">  map.set(nodeList[i], createLight(nodeList[i], colorList[i]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'ul'</span>).addEventListener(<span class="string">'click'</span>, e =&gt; map.get(e.target).switch())</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="6">
+<li><p>while promise </p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> createLight = <span class="function">(<span class="params">e, color</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (color !== <span class="string">'orange'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Light(e, color)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> yellowL = <span class="keyword">new</span> Light(e, color)</span><br><span class="line"></span><br><span class="line">  yellowL.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// css 动画</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transition = <span class="string">'color'</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.transitionDuration = <span class="string">'.5s'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> doTurnOn = doPromiseTimeout.bind(<span class="keyword">this</span>)</span><br><span class="line">    <span class="keyword">var</span> blink = <span class="built_in">Promise</span>.resolve()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; <span class="number">3</span>) &#123;</span><br><span class="line">      blink = blink.then(<span class="function"><span class="params">()</span> =&gt;</span> doTurnOn(i))</span><br><span class="line">      i++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    blink.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> yellowL</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="7">
+<li>子类 继承</li>
+</ol>
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 闪烁类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Blink</span>(<span class="params">dom, color = <span class="string">"grey"</span>, size</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 构造器继承 缺点，修改 this 上的方法时，父类的方法也会被修改</span></span><br><span class="line">  Light.call(<span class="keyword">this</span>, dom, color)</span><br><span class="line">  <span class="keyword">this</span>.size = size</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 2. 继承 父类的 Light.prototype ，</span></span><br><span class="line"><span class="comment"> * 为什么不使用 new Light() 来进行继承？</span></span><br><span class="line"><span class="comment"> * 因为理论上 Light 类实例化的时候时 是需要参数的，这个时候仅仅是继承，传与不传都不太合适</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Blink.prototype = <span class="built_in">Object</span>.create(Light.prototype);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Blink.prototype.constructor === Light true</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 3. new Blink(...size) 时，</span></span><br><span class="line"><span class="comment"> * size依旧会传进来，对this.size 进行赋值，</span></span><br><span class="line"><span class="comment"> * 所以，不写也不会出错，只是有点奇怪，</span></span><br><span class="line"><span class="comment"> * 因为指向了 父类的构造器，而不是自己</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Blink.prototype.constructor = Blink;</span><br><span class="line"></span><br><span class="line">Blink.prototype.blinkOn = <span class="function"><span class="keyword">function</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.dom.style.color = <span class="keyword">this</span>.color</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;, ms);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blink.prototype.blinkOff = <span class="function"><span class="keyword">function</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">      resolve(ms)</span><br><span class="line">    &#125;, ms);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blink.prototype.doPromiseTimeout = <span class="function"><span class="keyword">function</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.blinkOn(ms).then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.blinkOff(<span class="number">500</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blink.prototype.turnOff = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isLight = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.color = <span class="string">'grey'</span></span><br><span class="line">    <span class="keyword">this</span>.dom.style.fontSize = <span class="string">'12px'</span></span><br><span class="line">  &#125;, <span class="number">500</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Blink.prototype.turnOn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.isLight = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">this</span>.dom.style.transition = <span class="string">'color'</span></span><br><span class="line">  <span class="keyword">this</span>.dom.style.transitionDuration = <span class="string">'.5s'</span></span><br><span class="line">  <span class="keyword">this</span>.dom.style.fontSize = <span class="keyword">this</span>.size</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> blink = <span class="built_in">Promise</span>.resolve(<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; <span class="number">3</span>) &#123;</span><br><span class="line">    blink = blink.then(<span class="function">(<span class="params">ms</span>) =&gt;</span> <span class="keyword">this</span>.doPromiseTimeout(ms))</span><br><span class="line">    i++</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  blink = blink.then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.turnOff())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> createLight = <span class="function">(<span class="params">e, color</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (color !== <span class="string">'orange'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Light(e, color)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Blink(e, color, <span class="string">'24px'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ol start="7">
+<li>如何实现一个 promise.all (待完善)</li>
+<li>generator yield next (待完善)</li>
+<li>async await (待完善)</li>
+<li><p>实现 bind()</p>
+<blockquote>
+<p>const bar = foo.bind(this)<br>bar()</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span> (<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    that.apply(ctx);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>const bar = foo.bind(this)<br>bar(arg1, arg2)</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span>(<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> that.apply(ctx, <span class="built_in">arguments</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>const bar = foo.bind(this, arg1, arg2)<br>bar(arg3)</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span> (<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> bindArgs = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br><span class="line">    that.apply(ctx, args.concat(bindArgs));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当作为构造函数时，this 指向实例，that 指向绑定函数，因为下面一句 <code>fbound.prototype = this.prototype;</code>，已经修改了 fbound.prototype 为 绑定函数的 prototype，此时结果为 true，当结果为 true 的时候，this 指向实例。  </p>
+<p>当作为普通函数时，this 指向 window，self 指向绑定函数，此时结果为 false，当结果为 false 的时候，this 指向绑定的 ctx。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span> (<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">var</span> fNOP = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> fbound = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> bindArgs = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br><span class="line">	that.apply(<span class="keyword">this</span> <span class="keyword">instanceof</span> fNOP ? <span class="keyword">this</span> : ctx, args.concat(bindArgs));</span><br><span class="line">  &#125;</span><br><span class="line">  fNOP.prototype = <span class="keyword">this</span>.prototype;</span><br><span class="line">  fbound.prototype = <span class="keyword">new</span> fNOP();</span><br><span class="line">  <span class="keyword">return</span> fbound;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>e.g.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Point</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = x;</span><br><span class="line">  <span class="keyword">this</span>.y = y;</span><br><span class="line">  <span class="keyword">this</span>.getPoint = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">p.getPoint(); <span class="comment">// '1,2'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Point2 = Point.bind2(<span class="keyword">this</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> Point2(<span class="number">5</span>);</span><br><span class="line">p2.getPoint(); <span class="comment">// '0,5'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p2 <span class="keyword">instanceof</span> Point, p2 <span class="keyword">instanceof</span> Point2, p <span class="keyword">instanceof</span> Point2);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们直接将 <code>fbound.prototype = this.prototype</code>，我们直接修改 fbound.prototype 的时候，也会直接修改函数的 prototype。so:</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="built_in">Function</span>.prototype.bind || <span class="function"><span class="keyword">function</span> (<span class="params">ctx, ...formerArgs</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span> !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">"NOT_A_FUNCTION -- this is not callable"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">let</span> fNOP = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">  <span class="keyword">let</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> fbound = <span class="function"><span class="keyword">function</span> (<span class="params">...laterArgs</span>) </span>&#123;</span><br><span class="line">    that.apply(<span class="keyword">this</span> <span class="keyword">instanceof</span> fNOP ? <span class="keyword">this</span> : ctx, args.concat(laterArgs));</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.prototype) &#123;</span><br><span class="line">    fNOP.prototype = <span class="keyword">this</span>.prototype; </span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  fbound.prototype = <span class="keyword">new</span> fNOP();</span><br><span class="line">  <span class="keyword">return</span> fbound;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/11/浅谈js设计模式/" rel="next" title="浅谈js设计模式">
+                <i class="fa fa-chevron-left"></i> 浅谈js设计模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/27/房/" rel="prev" title="房">
+                房 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59218ccef0abff95" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="PAJK-FE" />
+          <p class="site-author-name" itemprop="name">PAJK-FE</p>
+           
+              <p class="site-description motion-element" itemprop="description">平安健康前端博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/PAJK-FE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端基础知识回顾"><span class="nav-number">1.</span> <span class="nav-text">前端基础知识回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、数组"><span class="nav-number">1.0.1.</span> <span class="nav-text">一、数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、作用域-–-最小访问"><span class="nav-number">1.0.2.</span> <span class="nav-text">三、作用域 – 最小访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、ES6"><span class="nav-number">1.0.3.</span> <span class="nav-text">四、ES6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、类、oop"><span class="nav-number">1.0.4.</span> <span class="nav-text">五、类、oop</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-cube"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">PAJK-FE</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 91710, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 91710, xid: "2018/05/18/前端基础知识回顾/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/91710/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("q6Ia0iMpPtRYJ7vPSbtJfSHn-gzGzoHsz", "8mSczUyAUNy071zbyEtjJFG5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
